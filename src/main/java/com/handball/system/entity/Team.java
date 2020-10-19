@@ -18,7 +18,7 @@ public class Team {
     @JoinColumn(name = "manager_id")
     private User manager;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
+    @OneToMany(mappedBy = "team")
     private Set<Player> players = new HashSet<>();
 
     public Team() {

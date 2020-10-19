@@ -29,7 +29,8 @@ public class TeamService {
     }
 
     public void deleteTeamById(Long id){
-        Set<Player> teamPlayers = playerRepository.findByTeam(id);
+        Team team = findTeamById(id);
+        Set<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
         for(Player player : teamPlayers){
             playerRepository.delete(player);
         }
