@@ -1,5 +1,12 @@
 package com.handball.system.entity;
 
-public enum Role {
-    USER,ORGANIZER,MANAGER,PROTOCOLIST,ADMIN
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    USER,ORGANIZER,MANAGER,PROTOCOLIST,ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
