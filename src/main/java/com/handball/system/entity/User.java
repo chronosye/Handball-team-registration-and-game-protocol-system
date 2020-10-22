@@ -4,6 +4,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +19,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Vārds nevar būt tukšs!")
     private String name;
+    @NotBlank(message = "Uzvārds nevar būt tukšs!")
     private String surname;
 
     @Column(unique = true)
+    @NotBlank(message = "E-pasts nevar būt tukšs!")
+    @Email(message = "Ievadiet pareizu e-pastu!")
     private String email;
+    @NotNull(message = "Parole nevar būt tukša!")
+    @Size(min = 8,message = "Minimālais paroles garums ir 8 simboli!")
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
