@@ -29,3 +29,7 @@ a:hover{
     margin-top: 5px;
     font-size: smaller;
 }
+.container.main{
+    padding-top: 20px;
+    background:rgba(224, 224, 224, 0.7);
+}

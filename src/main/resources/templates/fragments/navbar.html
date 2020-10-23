@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calendar">Spēļu kalendārs</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                        <a class="nav-link" href="/admin">Admin panel</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" class="nav-item">
+                        <a class="nav-link" href="/manager">Manager panel</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN','PROTOCOLIST')" class="nav-item">
+                        <a class="nav-link" href="/protocolist">Protocolist panel</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN','ORGANIZER')" class="nav-item">
+                        <a class="nav-link" href="/organizer">Organizer panel</a>
+                    </li>
+                </ul>
+                <div sec:authorize="isAnonymous()">
+                <a href="/register" class="btn btn-secondary my-2 my-sm-0">Reģistrēties</a>
+                <a href="/login" class="btn btn-success my-2 my-sm-0">Pieslēgties</a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a href="/logout" class="btn btn-secondary my-2 my-sm-0">Profils</a>
+                    <a href="/logout" class="btn btn-danger my-2 my-sm-0">Atslēgties</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+</body>
+</html>
