@@ -16,12 +16,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers(  "/login", "/register", "/img/**", "/css/**", "/static/js/**").permitAll()
+                    .antMatchers(  "/login","/login-error", "/register", "/img/**", "/css/**", "/static/js/**").permitAll()
                     .antMatchers("/h2-console/**").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").defaultSuccessUrl("/")
+                .loginPage("/login").defaultSuccessUrl("/").failureUrl("/login-error")
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll()
                 .logoutUrl("/logout")
@@ -30,6 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
