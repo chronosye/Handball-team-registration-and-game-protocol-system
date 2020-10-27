@@ -18,7 +18,10 @@ public class Team {
     @JoinColumn(name = "manager_id")
     private User manager;
 
-    @OneToMany(mappedBy = "team")
+    @ManyToMany(mappedBy = "teams")
+    private Set<Tournament> tournaments= new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
     private Set<Player> players = new HashSet<>();
 
     public Team() {
@@ -46,6 +49,14 @@ public class Team {
 
     public void setManager(User manager) {
         this.manager = manager;
+    }
+
+    public Set<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(Set<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 
     public Set<Player> getPlayers() {

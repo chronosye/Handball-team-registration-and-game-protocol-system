@@ -1,6 +1,7 @@
 package com.handball.system.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Game {
@@ -8,6 +9,12 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    private Tournament tournament;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @OneToOne
     @JoinColumn(name = "home_team_id")
@@ -29,6 +36,22 @@ public class Game {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 
     public Team getHomeTeam() {
