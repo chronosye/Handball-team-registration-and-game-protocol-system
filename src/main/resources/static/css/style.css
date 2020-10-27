@@ -16,10 +16,15 @@ body{
     border-radius: 5px;
     text-align: center;
 }
-a{
+
+a:hover{
+    text-decoration: none;
+}
+
+.login a{
     color: darkgray;
 }
-a:hover{
+.login a:hover{
     text-decoration: none;
     color:black;
 }
@@ -31,5 +36,19 @@ a:hover{
 }
 .container.main{
     padding-top: 20px;
+    padding-bottom: 20px;
     background:rgba(224, 224, 224, 0.7);
+}
+.card{
+    padding-top: 20px;
+    text-align: center;
+}
+.card-deck a{
+    color: darkgray;
+}
+.card-deck a:hover{
+    color: black;
+}
+.card:hover{
+    background:rgb(222, 222, 222);
 }
