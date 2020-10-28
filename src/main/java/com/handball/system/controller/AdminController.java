@@ -34,11 +34,7 @@ public class AdminController {
 
     @GetMapping("/addOrganizer/{id}")
     public String addOrganizer(@PathVariable String id){
-        User user = userService.findUser(Long.valueOf(id));
-        Set<Role> roles = user.getRoles();
-        roles.add(Role.ORGANIZER);
-        user.setRoles(roles);
-        userService.updateUser(user);
+        userService.addRole(Long.valueOf(id),Role.ORGANIZER);
         return "redirect:/admin/addOrganizer";
     }
 }

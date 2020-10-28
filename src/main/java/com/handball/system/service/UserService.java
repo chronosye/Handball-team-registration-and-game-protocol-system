@@ -37,6 +37,16 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
+    public void addRole(Long id,Role role){
+        Optional<User> user = userRepository.findById(id);
+        User foundUser;
+        foundUser = user.get();
+        Set<Role> roles = foundUser.getRoles();
+        roles.add(role);
+        foundUser.setRoles(roles);
+        userRepository.save(foundUser);
+    }
+
     public User updateUser(User user){
         userRepository.save(user);
         return user;
