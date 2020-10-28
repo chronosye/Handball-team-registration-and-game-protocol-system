@@ -26,7 +26,18 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(User user){
+    public Set<User> findAllUsers(){
+        Set<User> users = new HashSet<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
+    }
+
+    public User findUser(Long id){
+        Optional<User> user = userRepository.findById(id);
+        return user.get();
+    }
+
+    public User updateUser(User user){
         userRepository.save(user);
         return user;
     }

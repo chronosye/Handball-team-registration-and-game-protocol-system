@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -119,5 +120,33 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean hasRole(String role){
+        Role selectedRole;
+        switch(role) {
+            case "ADMIN":
+                selectedRole=Role.ADMIN;
+                break;
+            case "MANAGER":
+                selectedRole=Role.MANAGER;
+                break;
+            case "PROTOCOLIST":
+                selectedRole=Role.PROTOCOLIST;
+                break;
+            case "USER":
+                selectedRole=Role.USER;
+                break;
+            case "ORGANIZER":
+                selectedRole=Role.ORGANIZER;
+                break;
+            default:
+                selectedRole= null;
+        }
+        if(this.roles.contains(selectedRole)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
