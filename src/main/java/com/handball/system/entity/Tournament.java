@@ -1,6 +1,7 @@
 package com.handball.system.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,9 @@ public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Nosaukums nevar būt tukšs!")
+    private String name;
 
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
@@ -32,6 +36,14 @@ public class Tournament {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Team> getTeams() {
