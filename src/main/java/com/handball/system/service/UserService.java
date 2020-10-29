@@ -47,6 +47,16 @@ public class UserService implements UserDetailsService {
         userRepository.save(foundUser);
     }
 
+    public void removeRole(Long id,Role role){
+        Optional<User> user = userRepository.findById(id);
+        User foundUser;
+        foundUser = user.get();
+        Set<Role> roles = foundUser.getRoles();
+        roles.remove(role);
+        foundUser.setRoles(roles);
+        userRepository.save(foundUser);
+    }
+
     public User updateUser(User user){
         userRepository.save(user);
         return user;
