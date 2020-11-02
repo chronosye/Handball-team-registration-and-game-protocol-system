@@ -10,23 +10,33 @@
 <div class="sticky-top" th:insert="fragments/navbar.html"></div>
 <body>
 <div class="container main">
-    <div class="card-deck">
-        <a href="/admin/editOrganizer" class="card col-md-6">
-        <div>
-            <i class="fas fa-user-edit card-img-top fa-9x"></i>
-            <div class="card-body">
-                <h3>Pievienot/Noņemt turnīra organizatoru</h3>
+    <div class="container">
+        <div class="row cards">
+            <a href="/admin/editOrganizer" class="card col-lg-6">
+            <div>
+                <i class="fas fa-user-edit card-img-top fa-9x"></i>
+                <div class="card-body">
+                    <h3>Pievienot/Noņemt turnīra organizatoru</h3>
+                </div>
             </div>
-        </div>
-        </a>
-        <a href="/h2-console" class="card col-md-6">
-        <div>
-            <i class="fas fa-database card-img-top fa-9x"></i>
-            <div class="card-body">
-                <h3>H2 datubāzes konsole</h3>
+            </a>
+            <a href="/h2-console" class="card col-lg-6">
+            <div>
+                <i class="fas fa-database card-img-top fa-9x"></i>
+                <div class="card-body">
+                    <h3>H2 datubāzes konsole</h3>
+                </div>
             </div>
+            </a>
+            <a href="/admin/addManager" class="card col-lg-6">
+                <div>
+                    <i class="fas fa-users-cog card-img-top fa-9x"></i>
+                    <div class="card-body">
+                        <h3>Pievienot komandas menedžeri</h3>
+                    </div>
+                </div>
+            </a>
         </div>
-        </a>
     </div>
 </div>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>

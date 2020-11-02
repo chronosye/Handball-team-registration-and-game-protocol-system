@@ -40,4 +40,16 @@ public class AdminController {
         userService.removeRole(Long.valueOf(id),Role.ORGANIZER);
         return "redirect:/admin/editOrganizer";
     }
+
+    @GetMapping("/addManager")
+    public String showManagerUsers(Model model){
+        model.addAttribute("users",userService.findAllUsers());
+        return "addManager";
+    }
+
+    @GetMapping("/addManager/add/{id}")
+    public String addManager(@PathVariable String id){
+        userService.addRole(Long.valueOf(id),Role.MANAGER);
+        return "redirect:/admin/addManager";
+    }
 }
