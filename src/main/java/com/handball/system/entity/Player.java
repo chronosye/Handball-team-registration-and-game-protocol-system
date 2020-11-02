@@ -1,6 +1,7 @@
 package com.handball.system.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "players")
@@ -10,8 +11,11 @@ public class Player{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Vārds nevar būt tukšs!")
     private String name;
+    @NotBlank(message = "Uzvārds nevar būt tukšs!")
     private String surname;
+    @NotBlank(message = "Pozīcija nevar būt tukša!")
     private String position;
 
     @ManyToOne

@@ -25,19 +25,19 @@ public class OrganizerController {
 
     @GetMapping("")
     public String organizerPanel(){
-        return "organizer";
+        return "organizer/organizer";
     }
 
     @GetMapping("/createTournament")
     public String createTournament(Tournament tournament, Model model){
         model.addAttribute("tournament",tournament);
-        return "createTournament";
+        return "organizer/createTournament";
     }
 
     @PostMapping("/createTournament")
     String createTournament(@Valid Tournament tournament, BindingResult errors,@AuthenticationPrincipal User user){
         if(errors.hasErrors()){
-            return "createTournament";
+            return "organizer/createTournament";
         }
         tournamentService.saveNewTournament(tournament,user);
         return "redirect:/tournaments";

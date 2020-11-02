@@ -20,13 +20,13 @@ public class AdminController {
 
     @GetMapping("")
     public String adminPanel(){
-        return "admin";
+        return "admin/admin";
     }
 
     @GetMapping("/editOrganizer")
     public String showUsers(Model model){
         model.addAttribute("users",userService.findAllUsers());
-        return "editOrganizer";
+        return "admin/editOrganizer";
     }
 
     @GetMapping("/editOrganizer/add/{id}")
@@ -44,7 +44,7 @@ public class AdminController {
     @GetMapping("/addManager")
     public String showManagerUsers(Model model){
         model.addAttribute("users",userService.findAllUsers());
-        return "addManager";
+        return "admin/addManager";
     }
 
     @GetMapping("/addManager/add/{id}")

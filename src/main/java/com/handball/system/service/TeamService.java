@@ -34,6 +34,10 @@ public class TeamService {
         return teamRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
+    public Team findTeamByManager(User user){
+        return teamRepository.findByManager(user);
+    }
+
     public Team saveTeam(Team team,User manager){
         team.setManager(manager);
         return teamRepository.save(team);

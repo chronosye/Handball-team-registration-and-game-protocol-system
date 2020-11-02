@@ -5,6 +5,7 @@ import com.handball.system.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -21,6 +22,14 @@ public class PlayerService {
 
     public Player savePlayer(Player player){
         return playerRepository.save(player);
+    }
+
+    public Player updatePlayer(Player player,Long id){
+        Player foundPlayer = playerRepository.findById(id).get();
+        foundPlayer.setName(player.getName());
+        foundPlayer.setSurname(player.getSurname());
+        foundPlayer.setPosition(player.getPosition());
+        return playerRepository.save(foundPlayer);
     }
 
     public void deletePlayerById(Long id){
