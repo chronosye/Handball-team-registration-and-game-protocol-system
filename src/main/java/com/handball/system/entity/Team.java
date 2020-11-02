@@ -1,7 +1,10 @@
 package com.handball.system.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,6 +15,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Komandas nosaukums nevar būt tukšs!")
     private String name;
 
     @OneToOne
@@ -22,7 +26,7 @@ public class Team {
     private Set<Tournament> tournaments= new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
-    private Set<Player> players = new HashSet<>();
+    private List<Player> players = new ArrayList<>();
 
     public Team() {
     }
@@ -59,11 +63,11 @@ public class Team {
         this.tournaments = tournaments;
     }
 
-    public Set<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Set<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 }

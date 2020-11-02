@@ -2,6 +2,7 @@ package com.handball.system.service;
 
 import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
+import com.handball.system.entity.User;
 import com.handball.system.repository.PlayerRepository;
 import com.handball.system.repository.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,21 @@ public class TeamService {
         this.playerRepository = playerRepository;
     }
 
+    public boolean hasManagerTeam(User user){
+        if(teamRepository.findByManager(user)==null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     public Team findTeamById(Long id){
         return teamRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public Team saveTeam(Team team){
+    public Team saveTeam(Team team,User manager){
+        team.setManager(manager);
         return teamRepository.save(team);
     }
 
