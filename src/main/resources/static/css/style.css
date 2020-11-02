@@ -37,16 +37,16 @@ a:hover{
 .container.main{
     padding-top: 20px;
     padding-bottom: 20px;
-    background:rgba(224, 224, 224, 0.7);
+    background:rgba(224, 224, 224, 0.85);
 }
 .card{
     padding-top: 20px;
     text-align: center;
 }
-.card-deck a{
+.row.cards a{
     color: darkgray;
 }
-.card-deck a:hover{
+.row.cards a:hover{
     color: black;
 }
 .card:hover{
@@ -58,4 +58,7 @@ a:hover{
 }
 .roles{
     text-align: left;
+}
+#addPlayer{
+    margin-bottom: 20px;
 }

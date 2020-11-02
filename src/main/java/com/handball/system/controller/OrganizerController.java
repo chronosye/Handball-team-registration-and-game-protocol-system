@@ -5,6 +5,7 @@ import com.handball.system.entity.User;
 import com.handball.system.service.TournamentService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,8 @@ public class OrganizerController {
     }
 
     @GetMapping("/createTournament")
-    public String createTournament(Tournament tournament){
+    public String createTournament(Tournament tournament, Model model){
+        model.addAttribute("tournament",tournament);
         return "createTournament";
     }
 
@@ -38,6 +40,6 @@ public class OrganizerController {
             return "createTournament";
         }
         tournamentService.saveNewTournament(tournament,user);
-        return "redirect:/";
+        return "redirect:/tournaments";
     }
 }

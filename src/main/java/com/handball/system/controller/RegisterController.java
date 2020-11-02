@@ -3,6 +3,7 @@ package com.handball.system.controller;
 import com.handball.system.entity.User;
 import com.handball.system.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,8 @@ public class RegisterController {
     }
 
     @GetMapping("/register")
-    String register(User user) {
+    String register(User user, Model model) {
+        model.addAttribute("user",user);
         return "register";
     }
 
