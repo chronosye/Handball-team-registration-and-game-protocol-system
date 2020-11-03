@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,7 @@ public class Team {
     private Set<Tournament> tournaments= new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
+    @Size(min = 6,message = "Minimālais spēlētāju skaits ir 6!")
     private List<Player> players = new ArrayList<>();
 
     public Team() {

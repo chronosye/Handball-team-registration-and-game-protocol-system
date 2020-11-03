@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    index = 0;
+    index = 6;
     var wrapper = $('.morePlayers');
 
     $("#addPlayer").click(function (){
