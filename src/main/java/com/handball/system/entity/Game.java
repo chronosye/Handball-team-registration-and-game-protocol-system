@@ -27,6 +27,10 @@ public class Game {
     private Integer homeTeamGoals;
     private Integer awayTeamGoals;
 
+    @OneToOne
+    @JoinColumn(name = "protocolist_id")
+    private User protocolist;
+
     public Game() {
     }
 
@@ -84,5 +88,13 @@ public class Game {
 
     public void setAwayTeamGoals(Integer awayTeamGoals) {
         this.awayTeamGoals = awayTeamGoals;
+    }
+
+    public User getProtocolist() {
+        return protocolist;
+    }
+
+    public void setProtocolist(User protocolist) {
+        this.protocolist = protocolist;
     }
 }
