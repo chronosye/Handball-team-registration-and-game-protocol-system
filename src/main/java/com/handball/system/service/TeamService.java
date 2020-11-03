@@ -8,6 +8,7 @@ import com.handball.system.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -28,6 +29,12 @@ public class TeamService {
         else{
             return true;
         }
+    }
+
+    public Set<Team> findAllTeams(){
+        Set<Team> teams = new HashSet<>();
+        teamRepository.findAll().forEach(teams::add);
+        return teams;
     }
 
     public Team findTeamById(Long id){

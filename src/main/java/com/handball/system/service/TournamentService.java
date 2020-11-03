@@ -1,5 +1,6 @@
 package com.handball.system.service;
 
+import com.handball.system.entity.Team;
 import com.handball.system.entity.Tournament;
 import com.handball.system.entity.User;
 import com.handball.system.repository.TournamentRepository;
@@ -26,5 +27,25 @@ public class TournamentService {
         Set<Tournament> tournaments = new HashSet<>();
         tournamentRepository.findAll().forEach(tournaments::add);
         return tournaments;
+    }
+
+    public void addTeamToTournament(Tournament tournament, Team team){
+        tournament.getTeams().add(team);
+        tournamentRepository.save(tournament);
+    }
+
+    public void removeTeamFromTournament(Tournament tournament, Team team){
+        tournament.getTeams().remove(team);
+        tournamentRepository.save(tournament);
+    }
+
+    public Set<Tournament> findTournamentsByOrganizer(User user){
+        Set<Tournament> tournaments = new HashSet<>();
+        tournamentRepository.findByOrganizer(user).forEach(tournaments::add);
+        return tournaments;
+    }
+
+    public Tournament findTournamentById(Long id){
+        return tournamentRepository.findById(id).get();
     }
 }

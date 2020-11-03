@@ -5,7 +5,6 @@ import com.handball.system.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
