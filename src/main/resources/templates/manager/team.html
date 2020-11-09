@@ -28,15 +28,15 @@
             <td th:text="${player.surname}"></td>
             <td th:text="${player.position}"></td>
             <td>
-                <a class="btn btn-warning btn-block" th:href="@{'team/editPlayer/'+${player.id}}">Labot spēlētāju</a>
+                <a class="btn btn-warning btn-block" th:href="@{'/manager/team/editPlayer/'+${player.id}}">Labot spēlētāju</a>
             </td>
             <td>
-                <a class="btn btn-danger btn-block" th:href="@{'team/deletePlayer/'+${player.id}}">Dzēst spēlētāju</a>
+                <a class="btn btn-danger btn-block" th:href="@{'/manager/team/deletePlayer/'+${player.id}}">Dzēst spēlētāju</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a class="btn btn-success btn-block" th:href="@{'team/addPlayer/'}">Pievienot spēlētāju</a>
+    <a class="btn btn-success btn-block" th:href="@{'/manager/team/addPlayer'}">Pievienot spēlētāju</a>
 </div>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

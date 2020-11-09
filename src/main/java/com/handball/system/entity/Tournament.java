@@ -28,7 +28,7 @@ public class Tournament {
     private User organizer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament")
-    private Set<Game> games;
+    private Set<Game> games = new HashSet<>();
 
     public Long getId() {
         return id;

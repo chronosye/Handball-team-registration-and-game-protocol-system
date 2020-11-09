@@ -32,8 +32,8 @@
                 </ul>
             </td>
             <td>
-                <a class="btn btn-success" th:unless="${user.hasRole('ORGANIZER')}" th:href="@{'editOrganizer/add/'+${user.id}}">Pievienot turnīra organizatoriem</a>
-                <a class="btn btn-danger" th:if="${user.hasRole('ORGANIZER')}" th:href="@{'editOrganizer/remove/'+${user.id}}">Noņemt no turnīra organizatoriem</a>
+                <a class="btn btn-success" th:unless="${user.hasRole('ORGANIZER')}" th:href="@{'/admin/editOrganizer/add/'+${user.id}}">Pievienot turnīra organizatoriem</a>
+                <a class="btn btn-danger" th:if="${user.hasRole('ORGANIZER')}" th:href="@{'/admin/editOrganizer/remove/'+${user.id}}">Noņemt no turnīra organizatoriem</a>
             </td>
         </tr>
         </tbody>

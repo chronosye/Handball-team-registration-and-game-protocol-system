@@ -29,15 +29,15 @@ public class AdminController {
         return "admin/editOrganizer";
     }
 
-    @GetMapping("/editOrganizer/add/{id}")
-    public String addOrganizer(@PathVariable String id){
-        userService.addRole(Long.valueOf(id),Role.ORGANIZER);
+    @GetMapping("/editOrganizer/add/{UserId}")
+    public String addOrganizer(@PathVariable String UserId){
+        userService.addRole(Long.valueOf(UserId),Role.ORGANIZER);
         return "redirect:/admin/editOrganizer";
     }
 
-    @GetMapping("/editOrganizer/remove/{id}")
-    public String removeOrganizer(@PathVariable String id){
-        userService.removeRole(Long.valueOf(id),Role.ORGANIZER);
+    @GetMapping("/editOrganizer/remove/{UserId}")
+    public String removeOrganizer(@PathVariable String UserId){
+        userService.removeRole(Long.valueOf(UserId),Role.ORGANIZER);
         return "redirect:/admin/editOrganizer";
     }
 
@@ -47,9 +47,9 @@ public class AdminController {
         return "admin/addManager";
     }
 
-    @GetMapping("/addManager/add/{id}")
-    public String addManager(@PathVariable String id){
-        userService.addRole(Long.valueOf(id),Role.MANAGER);
+    @GetMapping("/addManager/add/{UserId}")
+    public String addManager(@PathVariable String UserId){
+        userService.addRole(Long.valueOf(UserId),Role.MANAGER);
         return "redirect:/admin/addManager";
     }
 }

@@ -32,7 +32,7 @@
                 </ul>
             </td>
             <td>
-                <a class="btn btn-success" th:unless="${user.hasRole('MANAGER')}" th:href="@{'addManager/add/'+${user.id}}">Pievienot menedžera lomu</a>
+                <a class="btn btn-success" th:unless="${user.hasRole('MANAGER')}" th:href="@{'/admin/addManager/add/'+${user.id}}">Pievienot menedžera lomu</a>
             </td>
         </tr>
         </tbody>

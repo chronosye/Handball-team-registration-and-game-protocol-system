@@ -15,7 +15,6 @@
         <thead>
         <tr>
             <th>Turnīra nosaukums</th>
-            <th>Komandas</th>
             <th></th>
         </tr>
         </thead>
@@ -23,12 +22,7 @@
         <tr th:each="tournament : ${tournaments}">
             <td th:text="${tournament.name}"></td>
             <td>
-                <ul th:each="team:${tournament.teams}">
-                    <li th:text="${team.name}"></li>
-                </ul>
-            </td>
-            <td>
-                <a class="btn btn-warning" th:href="@{'tournaments/'+${tournament.id}+'/editTeams'}">Pievienot/Noņemt komandas</a>
+                <a class="btn btn-info" th:href="@{'/organizer/tournaments/'+${tournament.id}}">Apskatīt informāciju</a>
             </td>
         </tr>
         </tbody>
