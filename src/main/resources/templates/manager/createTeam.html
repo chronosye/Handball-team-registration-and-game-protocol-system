@@ -11,28 +11,31 @@
 <body>
 <div class="container main">
     <div class="container info">
-    <form role="form" th:action="@{/manager/createTeam}" th:object="${team}" th:method="post">
-        <h2>Izveidot komandu</h2>
-        <div class="form-group">
-            <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="Komandas nosaukums">
-            <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-        </div>
-        <div class="form-group" th:each="i:${#numbers.sequence(0,5)}">
-            <h3 th:text="'Pievienot '+${i+1}+'.spēlētāju'"></h3>
+        <form role="form" th:action="@{/manager/createTeam}" th:object="${team}" th:method="post">
+            <h2>Izveidot komandu</h2>
             <div class="form-group">
-                <input class="form-control" type="text" th:field="*{players[__${i}__].name}" placeholder="Spēlētāja vārds"/>
+                <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="Komandas nosaukums">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
             </div>
-            <div class="form-group">
-                <input class="form-control" type="text" th:field="*{players[__${i}__].surname}" placeholder="Spēlētāja uzvārds"/>
+            <div class="form-group" th:each="i:${#numbers.sequence(0,5)}">
+                <h3 th:text="'Pievienot '+${i+1}+'.spēlētāju'"></h3>
+                <div class="form-group">
+                    <input class="form-control" type="text" th:field="*{players[__${i}__].name}" placeholder="Spēlētāja vārds"/>
+                    <p class="pError bg-danger" th:if="${#fields.hasErrors('players['+i+'].name')}" th:errors="*{players[__${i}__].name}"></p>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" th:field="*{players[__${i}__].surname}" placeholder="Spēlētāja uzvārds"/>
+                    <p class="pError bg-danger" th:if="${#fields.hasErrors('players['+i+'].surname')}" th:errors="*{players[__${i}__].surname}"></p>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" th:field="*{players[__${i}__].position}" placeholder="Spēlētāja pozīcija"/>
+                    <p class="pError bg-danger" th:if="${#fields.hasErrors('players['+i+'].position')}" th:errors="*{players[__${i}__].position}"></p>
+                </div>
             </div>
-            <div class="form-group">
-                <input class="form-control" type="text" th:field="*{players[__${i}__].position}" placeholder="Spēlētāja pozīcija"/>
-            </div>
-        </div>
-        <div class="morePlayers"></div>
-        <a class="btn btn-primary btn-block" id="addPlayer">Pievienot spēlētāju.</a>
-        <div class="form-group"><button class="btn btn-success btn-block" type="submit">Izveidot komandu</button></div>
-    </form>
+            <div class="morePlayers"></div>
+            <a class="btn btn-primary btn-block" id="addPlayer">Pievienot spēlētāju.</a>
+            <div class="form-group"><button class="btn btn-success btn-block" type="submit">Izveidot komandu</button></div>
+        </form>
     </div>
 </div>
 

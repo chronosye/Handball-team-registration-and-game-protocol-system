@@ -42,11 +42,24 @@ public class ManagerController {
 
     @PostMapping("/createTeam")
     public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user){
+        int index = 0;
+        for(Player player : team.getPlayers()){
+            if(player.getName().isBlank()){
+                errors.rejectValue("players["+index+"].name","error.players["+index+"].name","Nevar būt tukšs");
+            }
+            if(player.getSurname().isBlank()){
+                errors.rejectValue("players["+index+"].surname","error.players["+index+"].surname","Nevar būt tukšs");
+            }
+            if(player.getPosition().isBlank()){
+                errors.rejectValue("players["+index+"].position","error.players["+index+"].position","Nevar būt tukšs");
+            }
+            else{
+                player.setTeam(team);
+            }
+            index++;
+        }
         if(errors.hasErrors()){
             return "manager/createTeam";
-        }
-        for(Player player : team.getPlayers()){
-            player.setTeam(team);
         }
         teamService.saveTeam(team,user);
         return "redirect:/manager/team";
@@ -58,24 +71,24 @@ public class ManagerController {
         return "manager/team";
     }
 
-    @GetMapping("/team/editPlayer/{id}")
-    public String updatePlayer(@PathVariable String id,Model model){
-        model.addAttribute("player",playerService.findPlayerById(Long.valueOf(id)));
+    @GetMapping("/team/editPlayer/{playerId}")
+    public String updatePlayer(@PathVariable String playerId,Model model){
+        model.addAttribute("player",playerService.findPlayerById(Long.valueOf(playerId)));
         return "manager/editPlayer";
     }
 
-    @PostMapping("/team/editPlayer/{id}")
-    public String saveUpdatedPlayer(@PathVariable String id,@Valid Player player,BindingResult result){
+    @PostMapping("/team/editPlayer/{playerId}")
+    public String saveUpdatedPlayer(@PathVariable String playerId,@Valid Player player,BindingResult result){
         if(result.hasErrors()){
             return "manager/editPlayer";
         }
-        playerService.updatePlayer(player,Long.valueOf(id));
+        playerService.updatePlayer(player,Long.valueOf(playerId));
         return "redirect:/manager/team";
     }
 
-    @GetMapping("/team/deletePlayer/{id}")
-    public String deletePlayer(@PathVariable String id){
-        playerService.deletePlayerById(Long.valueOf(id));
+    @GetMapping("/team/deletePlayer/{playerId}")
+    public String deletePlayer(@PathVariable String playerId){
+        playerService.deletePlayerById(Long.valueOf(playerId));
         return "redirect:/manager/team";
     }
 
