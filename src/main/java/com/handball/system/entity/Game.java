@@ -1,9 +1,13 @@
 package com.handball.system.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table(name = "games")
 public class Game {
 
     @Id
@@ -11,24 +15,26 @@ public class Game {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
 
     @OneToOne
-    @JoinColumn(name = "home_team_id")
+    @NotNull(message = "Nav izvēlēta mājas komanda!")
     private Team homeTeam;
 
     @OneToOne
-    @JoinColumn(name = "away_team_id")
+    @NotNull(message = "Nav izvēlēta viesu komanda!")
     private Team awayTeam;
 
     private Integer homeTeamGoals;
     private Integer awayTeamGoals;
 
     @OneToOne
-    @JoinColumn(name = "protocolist_id")
+    @NotNull(message = "Nav izvēlēts protokolists!")
     private User protocolist;
 
     public Game() {
@@ -46,16 +52,16 @@ public class Game {
         return tournament;
     }
 
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
     }
 
     public Team getHomeTeam() {

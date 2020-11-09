@@ -37,6 +37,12 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
+    public Set<User> findAllUsersByRole(Role role){
+        Set<User> users = new HashSet<>();
+        userRepository.findUsersByRolesContaining(role).forEach(users::add);
+        return users;
+    }
+
     public void addRole(Long id,Role role){
         Optional<User> user = userRepository.findById(id);
         User foundUser;
