@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    index = 6;
     var wrapper = $('.morePlayers');
+    var index = $('form').children('div').length-3;
 
     $("#addPlayer").click(function (){
         var fieldHTML =
