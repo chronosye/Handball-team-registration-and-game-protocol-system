@@ -23,6 +23,7 @@ public class AdminController {
         return "admin/admin";
     }
 
+    //FUNCTIONALITY FOR ORGANIZERS STARTS HERE
     @GetMapping("/editOrganizer")
     public String showUsers(Model model){
         model.addAttribute("users",userService.findAllUsers());
@@ -40,7 +41,9 @@ public class AdminController {
         userService.removeRole(Long.valueOf(UserId),Role.ORGANIZER);
         return "redirect:/admin/editOrganizer";
     }
+    //FUNCTIONALITY FOR ORGANIZERS ENDS HERE
 
+    //FUNCTIONALITY FOR MANAGER STARTS HERE
     @GetMapping("/addManager")
     public String showManagerUsers(Model model){
         model.addAttribute("users",userService.findAllUsers());
@@ -52,4 +55,5 @@ public class AdminController {
         userService.addRole(Long.valueOf(UserId),Role.MANAGER);
         return "redirect:/admin/addManager";
     }
+    //FUNCTIONALITY FOR MANAGER ENDS HERE
 }

@@ -3,6 +3,7 @@ package com.handball.system.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -20,6 +21,8 @@ public class Game {
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @NotNull(message = "Nav izvēlēts datums un laiks!")
+    @Future(message = "Ievadītais datums ir pagātnē")
     private Date date;
 
     @OneToOne

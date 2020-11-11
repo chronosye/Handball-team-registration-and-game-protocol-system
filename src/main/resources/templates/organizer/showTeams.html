@@ -24,7 +24,8 @@
             <td th:text="${team.name}"></td>
             <td>
                 <a class="btn btn-success" th:unless="${team.tournaments.contains(tournament)}" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams/'+${team.id}+'/add'}">Pievienot komandu turnīram</a>
-                <a class="btn btn-danger" th:if="${team.tournaments.contains(tournament)}" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams/'+${team.id}+'/remove'}">Noņemt komandu no turnīra</a>
+                <a class="btn btn-danger" th:if="${team.tournaments.contains(tournament)} and not ${gameTeams.contains(team)}" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams/'+${team.id}+'/remove'}">Noņemt komandu no turnīra</a>
+                <a class="btn btn-danger disabled" th:if="${gameTeams.contains(team)}">Nevar noņemt! Eksistē spēles</a>
             </td>
         </tr>
         </tbody>
