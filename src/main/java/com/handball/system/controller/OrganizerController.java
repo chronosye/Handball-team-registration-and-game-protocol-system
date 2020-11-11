@@ -37,43 +37,51 @@ public class OrganizerController {
         return "organizer/organizer";
     }
 
+    //showing all organizer created tournaments
     @GetMapping("/tournaments")
     public String getOrganizerTournaments(Model model,@AuthenticationPrincipal User user){
         model.addAttribute("tournaments",tournamentService.findTournamentsByOrganizer(user));
         return "organizer/tournaments";
     }
 
+    //showing tournament info
     @GetMapping("/tournaments/{tournamentId}")
     public String getTournament(@PathVariable String tournamentId,Model model){
         model.addAttribute("tournament",tournamentService.findTournamentById(Long.valueOf(tournamentId)));
         return "organizer/tournament";
     }
 
+    //show list of teams to add for tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams")
     public String showTeamsToEdit(@PathVariable String tournamentId,Model model){
         model.addAttribute("teams",teamService.findAllTeams());
         model.addAttribute("tournament",tournamentService.findTournamentById(Long.valueOf(tournamentId)));
+        model.addAttribute("gameTeams",gameService.findTeamsInGames(tournamentService.findTournamentById(Long.valueOf(tournamentId))));
         return "organizer/showTeams";
     }
 
+    //add team to tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams/{teamId}/add")
     public String addTeamToTournament(@PathVariable String tournamentId,@PathVariable String teamId){
         tournamentService.addTeamToTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)),teamService.findTeamById(Long.valueOf(teamId)));
         return "redirect:/organizer/tournaments/"+tournamentId+"/editTeams";
     }
 
+    //remove team from tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams/{teamId}/remove")
     public String removeTeamFromTournament(@PathVariable String tournamentId,@PathVariable String teamId){
         tournamentService.removeTeamFromTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)),teamService.findTeamById(Long.valueOf(teamId)));
         return "redirect:/organizer/tournaments/"+tournamentId+"/editTeams";
     }
 
+    //creating new tournament
     @GetMapping("/createTournament")
     public String createTournament(Tournament tournament, Model model){
         model.addAttribute("tournament",tournament);
         return "organizer/createTournament";
     }
 
+    //saving new tournament to database
     @PostMapping("/createTournament")
     public String createTournament(@Valid Tournament tournament, BindingResult errors,@AuthenticationPrincipal User user){
         if(errors.hasErrors()){
@@ -83,21 +91,27 @@ public class OrganizerController {
         return "redirect:/organizer/tournaments/"+savedTournament.getId();
     }
 
+    //creating new game for tournament
     @GetMapping("/tournaments/{tournamentId}/createGame")
     public String createTournamentGame(@PathVariable String tournamentId,Model model,Game game){
         model.addAttribute("game",game);
         model.addAttribute("teams",tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
         model.addAttribute("protocolists",userService.findAllUsersByRole(Role.PROTOCOLIST));
-        return "organizer/createGame";
+        return "organizer/gameForm";
     }
 
-    @PostMapping("/tournaments/{tournamentId}/createGame")
-    public String createTournamentGame(@Valid Game game,BindingResult bindingResult, @PathVariable String tournamentId, Model model){
+    //saving new game into database
+    @PostMapping("/tournaments/{tournamentId}/game")
+    public String saveOrUpdateTournamentGame(@Valid Game game,BindingResult bindingResult, @PathVariable String tournamentId, Model model){
+        if(game.getAwayTeam()==game.getHomeTeam() && game.getAwayTeam() != null){
+            bindingResult.rejectValue("homeTeam","errors.homeTeam","Mājas un viesu komandas nevar būt vienādas");
+            bindingResult.rejectValue("awayTeam","errors.awayTeam","Mājas un viesu komandas nevar būt vienādas");
+        }
         if(bindingResult.hasErrors()){
             model.addAttribute("game",game);
             model.addAttribute("teams",tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
             model.addAttribute("protocolists",userService.findAllUsersByRole(Role.PROTOCOLIST));
-            return "organizer/createGame";
+            return "organizer/gameForm";
         }
         game.setTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)));
         game.setHomeTeamGoals(0);
@@ -106,4 +120,20 @@ public class OrganizerController {
         return "redirect:/organizer/tournaments/"+tournamentId;
     }
 
+    //edit tournament game
+    @GetMapping("/tournaments/{tournamentId}/game/{gameId}/edit")
+    public String editGame(@PathVariable String tournamentId,@PathVariable String gameId,Model model){
+        model.addAttribute("game",gameService.findGameById(Long.valueOf(gameId)));
+        model.addAttribute("teams",tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
+        model.addAttribute("tournamentId",tournamentId);
+        model.addAttribute("protocolists",userService.findAllUsersByRole(Role.PROTOCOLIST));
+        return "organizer/gameForm";
+    }
+
+    //delete tournament game
+    @GetMapping("/tournaments/{tournamentId}/game/{gameId}/delete")
+    public String deleteGame(@PathVariable String tournamentId,@PathVariable String gameId){
+        gameService.deleteGameById(Long.valueOf(gameId));
+        return "redirect:/organizer/tournaments/"+tournamentId;
+    }
 }

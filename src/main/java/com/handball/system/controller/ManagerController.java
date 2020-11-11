@@ -34,24 +34,26 @@ public class ManagerController {
         return "manager/manager";
     }
 
+    //CREATING TEAM FUNCTIONALITY STARS HERE
     @GetMapping("/createTeam")
     public String createTeam(Team team,Model model){
         model.addAttribute("team",team);
+        model.addAttribute("size",5);
         return "manager/createTeam";
     }
 
     @PostMapping("/createTeam")
-    public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user){
+    public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user,Model model){
         int index = 0;
         for(Player player : team.getPlayers()){
             if(player.getName().isBlank()){
-                errors.rejectValue("players["+index+"].name","error.players["+index+"].name","Nevar būt tukšs");
+                errors.rejectValue("players["+index+"].name","error.players["+index+"].name",index+1+".spēlētāja vārds nevar būt tukšs");
             }
             if(player.getSurname().isBlank()){
-                errors.rejectValue("players["+index+"].surname","error.players["+index+"].surname","Nevar būt tukšs");
+                errors.rejectValue("players["+index+"].surname","error.players["+index+"].surname",index+1+".spēlētāja uzvārds nevar būt tukšs");
             }
             if(player.getPosition().isBlank()){
-                errors.rejectValue("players["+index+"].position","error.players["+index+"].position","Nevar būt tukšs");
+                errors.rejectValue("players["+index+"].position","error.players["+index+"].position",index+1+".spēlētāja pozīcija nevar būt tukša");
             }
             else{
                 player.setTeam(team);
@@ -59,52 +61,54 @@ public class ManagerController {
             index++;
         }
         if(errors.hasErrors()){
+            if(team.getPlayers().size()<=6){
+                model.addAttribute("size",5);
+            }else{
+                model.addAttribute("size",team.getPlayers().size()-1);
+            }
             return "manager/createTeam";
         }
         teamService.saveTeam(team,user);
         return "redirect:/manager/team";
     }
+    //CREATING TEAM FUNCTIONALITY ENDS HERE
 
+    //Reading created team
     @GetMapping("/team")
     public String showTeam(@AuthenticationPrincipal User user,Model model){
         model.addAttribute("team",teamService.findTeamByManager(user));
         return "manager/team";
     }
 
-    @GetMapping("/team/editPlayer/{playerId}")
-    public String updatePlayer(@PathVariable String playerId,Model model){
-        model.addAttribute("player",playerService.findPlayerById(Long.valueOf(playerId)));
-        return "manager/editPlayer";
-    }
-
-    @PostMapping("/team/editPlayer/{playerId}")
-    public String saveUpdatedPlayer(@PathVariable String playerId,@Valid Player player,BindingResult result){
-        if(result.hasErrors()){
-            return "manager/editPlayer";
-        }
-        playerService.updatePlayer(player,Long.valueOf(playerId));
-        return "redirect:/manager/team";
-    }
-
-    @GetMapping("/team/deletePlayer/{playerId}")
-    public String deletePlayer(@PathVariable String playerId){
-        playerService.deletePlayerById(Long.valueOf(playerId));
-        return "redirect:/manager/team";
-    }
-
+    //Creating new team player
     @GetMapping("/team/addPlayer")
     public String addPlayer(Model model,Player player){
         model.addAttribute("player",player);
-        return "manager/addPlayer";
+        return "manager/playerForm";
     }
 
-    @PostMapping("/team/addPlayer")
-    public String saveAddedPlayer(@Valid Player player,BindingResult result,@AuthenticationPrincipal User user){
+    //Editing team player
+    @GetMapping("/team/editPlayer/{playerId}")
+    public String updatePlayer(@PathVariable String playerId,Model model){
+        model.addAttribute("player",playerService.findPlayerById(Long.valueOf(playerId)));
+        return "manager/playerForm";
+    }
+
+    //saving team player to database
+    @PostMapping("/team/player")
+    public String saveOrUpdatePlayer(@Valid Player player,BindingResult result,@AuthenticationPrincipal User user){
         if(result.hasErrors()){
-            return "manager/addPlayer";
+            return "manager/playerForm";
         }
         player.setTeam(teamService.findTeamByManager(user));
         playerService.savePlayer(player);
+        return "redirect:/manager/team";
+    }
+
+    //deleting team player
+    @GetMapping("/team/deletePlayer/{playerId}")
+    public String deletePlayer(@PathVariable String playerId){
+        playerService.deletePlayerById(Long.valueOf(playerId));
         return "redirect:/manager/team";
     }
 }
