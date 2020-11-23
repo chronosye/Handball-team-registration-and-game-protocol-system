@@ -1,25 +1,36 @@
 package com.handball.system.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
-@Table(name = "game_player")
-public class GamePlayer {
+public class PlayerStats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
+    private boolean playingGame;
+
     @ManyToOne
     private Player player;
 
     @ManyToOne
-    private Game game;
+    private Protocol protocol;
 
+    @Min(value = 0,message = "Metienu skaits nevar būt negatīvs!")
     private Integer shots;
+    @Min(value = 0,message = "Vārtu skaits nevar būt negatīvs!")
     private Integer goals;
 
-    public GamePlayer() {
+    public PlayerStats() {
+    }
+
+    public PlayerStats(Player player, Integer shots, Integer goals) {
+        this.player = player;
+        this.shots = shots;
+        this.goals = goals;
     }
 
     public Long getId() {
@@ -30,6 +41,14 @@ public class GamePlayer {
         this.id = id;
     }
 
+    public boolean getPlayingGame() {
+        return playingGame;
+    }
+
+    public void setPlayingGame(boolean playingGame) {
+        this.playingGame = playingGame;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -38,12 +57,12 @@ public class GamePlayer {
         this.player = player;
     }
 
-    public Game getGame() {
-        return game;
+    public Protocol getProtocol() {
+        return protocol;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
     }
 
     public Integer getShots() {
