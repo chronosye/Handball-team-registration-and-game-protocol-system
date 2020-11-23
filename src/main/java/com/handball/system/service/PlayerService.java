@@ -1,10 +1,12 @@
 package com.handball.system.service;
 
 import com.handball.system.entity.Player;
+import com.handball.system.entity.Team;
 import com.handball.system.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class PlayerService {
@@ -29,6 +31,10 @@ public class PlayerService {
         foundPlayer.setSurname(player.getSurname());
         foundPlayer.setPosition(player.getPosition());
         return playerRepository.save(foundPlayer);
+    }
+
+    public List<Player> findPlayersByTeam(Team team){
+        return playerRepository.findPlayersByTeam(team);
     }
 
     public void deletePlayerById(Long id){

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -52,7 +53,7 @@ public class TeamService {
 
     public void deleteTeamById(Long id){
         Team team = findTeamById(id);
-        Set<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
+        List<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
         for(Player player : teamPlayers){
             playerRepository.delete(player);
         }

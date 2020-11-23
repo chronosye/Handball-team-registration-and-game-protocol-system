@@ -25,6 +25,8 @@ public class Game {
     @Future(message = "Ievadītais datums ir pagātnē")
     private Date date;
 
+    private boolean ended;
+
     @OneToOne
     @NotNull(message = "Nav izvēlēta mājas komanda!")
     private Team homeTeam;
@@ -39,6 +41,9 @@ public class Game {
     @OneToOne
     @NotNull(message = "Nav izvēlēts protokolists!")
     private User protocolist;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Protocol protocol;
 
     public Game() {
     }
@@ -65,6 +70,14 @@ public class Game {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
     }
 
     public Team getHomeTeam() {
@@ -105,5 +118,13 @@ public class Game {
 
     public void setProtocolist(User protocolist) {
         this.protocolist = protocolist;
+    }
+
+    public Protocol getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
     }
 }
