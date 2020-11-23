@@ -44,22 +44,6 @@ public class ManagerController {
 
     @PostMapping("/createTeam")
     public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user,Model model){
-        int index = 0;
-        for(Player player : team.getPlayers()){
-            if(player.getName().isBlank()){
-                errors.rejectValue("players["+index+"].name","error.players["+index+"].name",index+1+".spēlētāja vārds nevar būt tukšs");
-            }
-            if(player.getSurname().isBlank()){
-                errors.rejectValue("players["+index+"].surname","error.players["+index+"].surname",index+1+".spēlētāja uzvārds nevar būt tukšs");
-            }
-            if(player.getPosition().isBlank()){
-                errors.rejectValue("players["+index+"].position","error.players["+index+"].position",index+1+".spēlētāja pozīcija nevar būt tukša");
-            }
-            else{
-                player.setTeam(team);
-            }
-            index++;
-        }
         if(errors.hasErrors()){
             if(team.getPlayers().size()<=6){
                 model.addAttribute("size",5);

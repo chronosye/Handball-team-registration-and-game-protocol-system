@@ -1,10 +1,7 @@
 package com.handball.system.controller;
 
 import com.handball.system.entity.*;
-import com.handball.system.service.GameService;
-import com.handball.system.service.TeamService;
-import com.handball.system.service.TournamentService;
-import com.handball.system.service.UserService;
+import com.handball.system.service.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+
+@Transactional
 @Controller
 @RequestMapping("/organizer")
 public class OrganizerController {
@@ -24,12 +24,14 @@ public class OrganizerController {
     private final TeamService teamService;
     private final GameService gameService;
     private final UserService userService;
+    private final PlayerStatsService playerStatsService;
 
-    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService) {
+    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService, PlayerStatsService playerStatsService) {
         this.tournamentService = tournamentService;
         this.teamService = teamService;
         this.gameService = gameService;
         this.userService = userService;
+        this.playerStatsService = playerStatsService;
     }
 
     @GetMapping("")
@@ -113,10 +115,7 @@ public class OrganizerController {
             model.addAttribute("protocolists",userService.findAllUsersByRole(Role.PROTOCOLIST));
             return "organizer/gameForm";
         }
-        game.setTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)));
-        game.setHomeTeamGoals(0);
-        game.setAwayTeamGoals(0);
-        gameService.saveGame(game);
+        gameService.saveGame(game,tournamentService.findTournamentById(Long.valueOf(tournamentId)));
         return "redirect:/organizer/tournaments/"+tournamentId;
     }
 

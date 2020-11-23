@@ -40,9 +40,9 @@
             </thead>
             <tbody>
             <tr th:each="game:${tournament.games}">
-                <td th:text="${game.homeTeam}"></td>
-                <td th:text="${game.awayTeam}"></td>
-                <td th:text="${game.date}"></td>
+                <td th:text="${game.homeTeam.name}"></td>
+                <td th:text="${game.awayTeam.name}"></td>
+                <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
             </tr>
             </tbody>
         </table>

@@ -20,7 +20,6 @@
             <thead>
             <tr>
                 <th>Komandas nosaukums</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -51,7 +50,7 @@
                 <td th:text="${game.homeTeamGoals + ' : ' + game.awayTeamGoals}"></td>
                 <td>
                     <a class="btn btn-warning" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/game/'+${game.id}+'/edit'}">Labot</a>
-                    <a class="btn btn-danger" th:if="${game.awayTeamGoals}==0 and ${game.homeTeamGoals}==0" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/game/'+${game.id}+'/delete'}">Dzēst</a>
+                    <a class="btn btn-danger" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/game/'+${game.id}+'/delete'}">Dzēst</a>
                 </td>
             </tr>
             </tbody>
