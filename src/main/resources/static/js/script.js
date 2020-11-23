@@ -17,4 +17,13 @@ $(document).ready(function(){
         $(wrapper).append(fieldHTML);
         index++;
     });
+
+    $("input:checkbox").on("change", function(){
+        var input = $(this).closest("tr").find(':input[type="number"]')
+        if($(this).is(":checked")){
+            input.attr('readonly',false);
+        }else{
+            input.attr('readonly',true);
+        }
+    });
 });
