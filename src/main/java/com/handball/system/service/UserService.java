@@ -26,18 +26,24 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Set<User> findAllUsers(){
+    public Set<User> findAllUsers() {
         Set<User> users = new HashSet<>();
         userRepository.findAll().forEach(users::add);
         return users;
     }
 
-    public User findUser(Long id){
+    public User findUser(Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.get();
     }
 
-    public void addRole(Long id,Role role){
+    public Set<User> findAllUsersByRole(Role role) {
+        Set<User> users = new HashSet<>();
+        userRepository.findUsersByRolesContaining(role).forEach(users::add);
+        return users;
+    }
+
+    public void addRole(Long id, Role role) {
         Optional<User> user = userRepository.findById(id);
         User foundUser;
         foundUser = user.get();
@@ -47,7 +53,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(foundUser);
     }
 
-    public void removeRole(Long id,Role role){
+    public void removeRole(Long id, Role role) {
         Optional<User> user = userRepository.findById(id);
         User foundUser;
         foundUser = user.get();
@@ -57,25 +63,25 @@ public class UserService implements UserDetailsService {
         userRepository.save(foundUser);
     }
 
-    public User updateUser(User user){
+    public User updateUser(User user) {
         userRepository.save(user);
         return user;
     }
 
-    public boolean userExists(String email){
+    public boolean userExists(String email) {
         return userRepository.existsByEmail(email);
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         User userToDelete = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
         userRepository.delete(userToDelete);
     }
 
-    public void registerUser(User user){
+    public void registerUser(User user) {
         final String encryptedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encryptedPassword);
-        Set<Role> roles= new HashSet<>();
+        Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
         user.setRoles(roles);
 
@@ -89,8 +95,7 @@ public class UserService implements UserDetailsService {
 
         if (user.isPresent()) {
             return user.get();
-        }
-        else {
+        } else {
             throw new UsernameNotFoundException("User with that email not found");
         }
     }

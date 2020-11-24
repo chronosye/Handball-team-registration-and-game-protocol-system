@@ -21,17 +21,17 @@ public class RegisterController {
 
     @GetMapping("/register")
     String register(User user, Model model) {
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "register";
     }
 
     @PostMapping("/register")
-    String register(@Valid User user, BindingResult errors){
-        if(errors.hasErrors()){
+    String register(@Valid User user, BindingResult errors) {
+        if (errors.hasErrors()) {
             return "register";
         }
-        if(userService.userExists(user.getEmail())){
-            errors.rejectValue("email","error.user","Lietotājs ar šādu e-pastu jau pastāv!");
+        if (userService.userExists(user.getEmail())) {
+            errors.rejectValue("email", "error.user", "Lietotājs ar šādu e-pastu jau pastāv!");
             return "register";
         }
         userService.registerUser(user);

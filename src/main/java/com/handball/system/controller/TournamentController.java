@@ -18,14 +18,14 @@ public class TournamentController {
     }
 
     @GetMapping("")
-    public String tournaments(Model model){
-        model.addAttribute("tournaments",tournamentService.findAllTournaments());
+    public String tournaments(Model model) {
+        model.addAttribute("tournaments", tournamentService.findAllTournaments());
         return "tournaments";
     }
 
-    @GetMapping("/{id}")
-    public String tournament(Model model, @PathVariable String id){
-        model.addAttribute("tournament",tournamentService.findTournamentById(Long.valueOf(id)));
+    @GetMapping("/{tournamentId}")
+    public String tournament(Model model, @PathVariable String tournamentId) {
+        model.addAttribute("tournament", tournamentService.findTournamentById(Long.valueOf(tournamentId)));
         return "tournament";
     }
 }

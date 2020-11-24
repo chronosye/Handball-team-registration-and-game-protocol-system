@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i');
-body{
+
+body {
     background: url("/img/background.jpg");
     background-repeat: no-repeat;
-    font-family: "Roboto",sans-serif;
+    font-family: "Roboto", sans-serif;
     background-attachment: fixed;
     background-size: cover;
 }
-.login{
+
+.login {
     width: 300px;
     margin-left: auto;
     margin-right: auto;
@@ -17,53 +19,65 @@ body{
     text-align: center;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
 
-.login a{
+.login a {
     color: darkgray;
 }
-.login a:hover{
+
+.login a:hover {
     text-decoration: none;
-    color:black;
+    color: black;
 }
-.pError{
+
+.pError {
     color: white;
     border-radius: 2px;
     margin-top: 5px;
     font-size: smaller;
+    padding: 5px 10px 5px 10px;
 }
-.container.main{
+
+.container.main {
     padding-top: 20px;
     padding-bottom: 20px;
-    background:rgba(224, 224, 224, 0.85);
+    background: rgba(224, 224, 224, 0.85);
 }
-.container.info{
+
+.container.info {
     background: white;
     padding: 20px;
     border-radius: 8px;
 }
-.card{
+
+.card {
     padding-top: 20px;
     text-align: center;
 }
-.row.cards a{
+
+.row.cards a {
     color: darkgray;
 }
-.row.cards a:hover{
+
+.row.cards a:hover {
     color: black;
 }
-.card:hover{
-    background:rgb(222, 222, 222);
+
+.card:hover {
+    background: rgb(222, 222, 222);
 }
-.table{
+
+.table {
     background: white;
     text-align: center;
 }
-li{
+
+li {
     text-align: left;
 }
-#addPlayer{
+
+#addPlayer {
     margin-bottom: 20px;
 }

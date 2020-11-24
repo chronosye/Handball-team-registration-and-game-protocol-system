@@ -6,12 +6,15 @@
 <div class="container main">
     <div class="container info">
         <h4 th:text="${tournament.name}"></h4>
-        <h6>Komandas</h6>
+        <div>
+            <h6>Komandas</h6>
+            <a class="btn btn-info float-right" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams'}">Pievienot/Noņemt
+                komandas</a>
+        </div>
         <table class="table">
             <thead>
             <tr>
                 <th>Komandas nosaukums</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -22,14 +25,17 @@
         </table>
 
         <hr>
-
         <h6>Spēļu kalendārs</h6>
+        <a class="btn btn-info float-right" th:href="@{'/organizer/tournaments/'+${tournament.id}+'/createGame'}">Pievienot
+            spēli</a>
         <table class="table">
             <thead>
             <tr>
                 <th>Mājas komanda</th>
                 <th>Viesu komanda</th>
                 <th>Datums</th>
+                <th>Rezultāts</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -37,6 +43,13 @@
                 <td th:text="${game.homeTeam.name}"></td>
                 <td th:text="${game.awayTeam.name}"></td>
                 <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${game.homeTeamGoals + ' : ' + game.awayTeamGoals}"></td>
+                <td>
+                    <a class="btn btn-warning"
+                       th:href="@{'/organizer/tournaments/'+${tournament.id}+'/game/'+${game.id}+'/edit'}">Labot</a>
+                    <a class="btn btn-danger"
+                       th:href="@{'/organizer/tournaments/'+${tournament.id}+'/game/'+${game.id}+'/delete'}">Dzēst</a>
+                </td>
             </tr>
             </tbody>
         </table>

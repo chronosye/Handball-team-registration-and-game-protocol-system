@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <form role="form" th:action="@{'/organizer/tournaments/'+${tournamentId}+'/game'}" th:object="${game}"
+              th:method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <h6>Mājas komanda</h6>
+                <select class="form-control" th:field="*{homeTeam}">
+                    <option value="">--Izvēlies mājas komandu--</option>
+                    <option th:each="homeTeam : ${teams}" th:value="${homeTeam.id}" th:text="${homeTeam.name}"></option>
+                </select>
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeam')}" th:errors="*{homeTeam}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Viesu komanda</h6>
+                <select class="form-control" th:field="*{awayTeam}">
+                    <option value="">--Izvēlies mājas komandu--</option>
+                    <option th:each="awayTeam : ${teams}" th:value="${awayTeam.id}" th:text="${awayTeam.name}"></option>
+                </select>
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeam')}" th:errors="*{awayTeam}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Protokolists</h6>
+                <select class="form-control" th:field="*{protocolist}">
+                    <option value="">--Izvēlies protokolistu--</option>
+                    <option th:each="protocolist : ${protocolists}" th:value="${protocolist.id}"
+                            th:text="${protocolist.name + ' ' +protocolist.surname + '( ' + protocolist.email +' )'}"></option>
+                </select>
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('protocolist')}" th:errors="*{protocolist}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Datums un laiks</h6>
+                <input class="form-control" th:field="*{date}" type="datetime-local">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" type="submit">Saglabāt spēli</button>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>

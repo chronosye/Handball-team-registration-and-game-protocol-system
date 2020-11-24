@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -22,38 +23,37 @@ public class TeamService {
         this.playerRepository = playerRepository;
     }
 
-    public boolean hasManagerTeam(User user){
-        if(teamRepository.findByManager(user)==null){
+    public boolean hasManagerTeam(User user) {
+        if (teamRepository.findByManager(user) == null) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
 
-    public Set<Team> findAllTeams(){
+    public Set<Team> findAllTeams() {
         Set<Team> teams = new HashSet<>();
         teamRepository.findAll().forEach(teams::add);
         return teams;
     }
 
-    public Team findTeamById(Long id){
+    public Team findTeamById(Long id) {
         return teamRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public Team findTeamByManager(User user){
+    public Team findTeamByManager(User user) {
         return teamRepository.findByManager(user);
     }
 
-    public Team saveTeam(Team team,User manager){
+    public Team saveTeam(Team team, User manager) {
         team.setManager(manager);
         return teamRepository.save(team);
     }
 
-    public void deleteTeamById(Long id){
+    public void deleteTeamById(Long id) {
         Team team = findTeamById(id);
-        Set<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
-        for(Player player : teamPlayers){
+        List<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
+        for (Player player : teamPlayers) {
             playerRepository.delete(player);
         }
         teamRepository.deleteById(id);

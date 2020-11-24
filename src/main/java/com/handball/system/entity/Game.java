@@ -1,9 +1,14 @@
 package com.handball.system.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table(name = "games")
 public class Game {
 
     @Id
@@ -11,25 +16,34 @@ public class Game {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @NotNull(message = "Nav izvēlēts datums un laiks!")
+    @Future(message = "Ievadītais datums ir pagātnē")
     private Date date;
 
+    private boolean ended;
+
     @OneToOne
-    @JoinColumn(name = "home_team_id")
+    @NotNull(message = "Nav izvēlēta mājas komanda!")
     private Team homeTeam;
 
     @OneToOne
-    @JoinColumn(name = "away_team_id")
+    @NotNull(message = "Nav izvēlēta viesu komanda!")
     private Team awayTeam;
 
     private Integer homeTeamGoals;
     private Integer awayTeamGoals;
 
     @OneToOne
-    @JoinColumn(name = "protocolist_id")
+    @NotNull(message = "Nav izvēlēts protokolists!")
     private User protocolist;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Protocol protocol;
 
     public Game() {
     }
@@ -46,6 +60,10 @@ public class Game {
         return tournament;
     }
 
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -54,8 +72,12 @@ public class Game {
         this.date = date;
     }
 
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
+    public boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
     }
 
     public Team getHomeTeam() {
@@ -96,5 +118,13 @@ public class Game {
 
     public void setProtocolist(User protocolist) {
         this.protocolist = protocolist;
+    }
+
+    public Protocol getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
     }
 }
