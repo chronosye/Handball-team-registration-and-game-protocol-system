@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<header class="sticky-top">
+<header class="sticky-top" th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/">Logo</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -34,8 +35,8 @@
                     </li>
                 </ul>
                 <div sec:authorize="isAnonymous()">
-                <a href="/register" class="btn btn-secondary my-2 my-sm-0">Reģistrēties</a>
-                <a href="/login" class="btn btn-success my-2 my-sm-0">Pieslēgties</a>
+                    <a href="/register" class="btn btn-secondary my-2 my-sm-0">Reģistrēties</a>
+                    <a href="/login" class="btn btn-success my-2 my-sm-0">Pieslēgties</a>
                 </div>
                 <div sec:authorize="isAuthenticated()">
                     <a href="/profile" class="btn btn-secondary my-2 my-sm-0">Profils</a>

@@ -19,9 +19,9 @@ public class PlayerStats {
     @ManyToOne
     private Protocol protocol;
 
-    @Min(value = 0,message = "Metienu skaits nevar būt negatīvs!")
+    @Min(value = 0, message = "Metienu skaits nevar būt negatīvs!")
     private Integer shots;
-    @Min(value = 0,message = "Vārtu skaits nevar būt negatīvs!")
+    @Min(value = 0, message = "Vārtu skaits nevar būt negatīvs!")
     private Integer goals;
 
     public PlayerStats() {

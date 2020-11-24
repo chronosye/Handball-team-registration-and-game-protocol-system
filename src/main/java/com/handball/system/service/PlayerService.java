@@ -17,15 +17,15 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public Player findPlayerById(Long id){
+    public Player findPlayerById(Long id) {
         return playerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public Player savePlayer(Player player){
+    public Player savePlayer(Player player) {
         return playerRepository.save(player);
     }
 
-    public Player updatePlayer(Player player,Long id){
+    public Player updatePlayer(Player player, Long id) {
         Player foundPlayer = playerRepository.findById(id).get();
         foundPlayer.setName(player.getName());
         foundPlayer.setSurname(player.getSurname());
@@ -33,11 +33,11 @@ public class PlayerService {
         return playerRepository.save(foundPlayer);
     }
 
-    public List<Player> findPlayersByTeam(Team team){
+    public List<Player> findPlayersByTeam(Team team) {
         return playerRepository.findPlayersByTeam(team);
     }
 
-    public void deletePlayerById(Long id){
+    public void deletePlayerById(Long id) {
         playerRepository.deleteById(id);
     }
 }

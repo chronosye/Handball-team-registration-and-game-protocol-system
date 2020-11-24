@@ -16,12 +16,12 @@ public class Tournament {
     @NotBlank(message = "Nosaukums nevar būt tukšs!")
     private String name;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tournaments_teams",
             joinColumns = @JoinColumn(name = "tournament_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id"))
-    private Set<Team> teams= new HashSet<>();
+    private Set<Team> teams = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "organizer_id")

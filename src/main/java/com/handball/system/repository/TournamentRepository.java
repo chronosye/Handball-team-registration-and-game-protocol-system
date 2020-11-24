@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface TournamentRepository extends JpaRepository<Tournament,Long> {
+public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     Set<Tournament> findByOrganizer(User user);
 }

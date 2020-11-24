@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Email(message = "Ievadiet pareizu e-pastu!")
     private String email;
     @NotNull(message = "Parole nevar būt tukša!")
-    @Size(min = 8,message = "Minimālais paroles garums ir 8 simboli!")
+    @Size(min = 8, message = "Minimālais paroles garums ir 8 simboli!")
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -121,30 +121,30 @@ public class User implements UserDetails {
         return true;
     }
 
-    public boolean hasRole(String role){
+    public boolean hasRole(String role) {
         Role selectedRole;
-        switch(role) {
+        switch (role) {
             case "ADMIN":
-                selectedRole=Role.ADMIN;
+                selectedRole = Role.ADMIN;
                 break;
             case "MANAGER":
-                selectedRole=Role.MANAGER;
+                selectedRole = Role.MANAGER;
                 break;
             case "PROTOCOLIST":
-                selectedRole=Role.PROTOCOLIST;
+                selectedRole = Role.PROTOCOLIST;
                 break;
             case "USER":
-                selectedRole=Role.USER;
+                selectedRole = Role.USER;
                 break;
             case "ORGANIZER":
-                selectedRole=Role.ORGANIZER;
+                selectedRole = Role.ORGANIZER;
                 break;
             default:
-                selectedRole= null;
+                selectedRole = null;
         }
-        if(this.roles.contains(selectedRole)){
+        if (this.roles.contains(selectedRole)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

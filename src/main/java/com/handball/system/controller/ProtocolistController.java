@@ -45,7 +45,7 @@ public class ProtocolistController {
         Game game = gameService.findGameById(Long.valueOf(gameId));
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
-        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam),game);
+        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
         model.addAttribute("game", game);
         model.addAttribute("homeTeam", homeTeam);
         model.addAttribute("awayTeam", awayTeam);
@@ -58,18 +58,18 @@ public class ProtocolistController {
         Game game = gameService.findGameById(Long.valueOf(gameId));
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
-        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam),game);
+        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
         model.addAttribute("game", game);
         model.addAttribute("homeTeam", homeTeam);
         model.addAttribute("awayTeam", awayTeam);
-        model.addAttribute("protocol", protocolService.getProtocolToEdit(game,protocol));
+        model.addAttribute("protocol", protocolService.getProtocolToEdit(game, protocol));
         return "protocolist/protocolForm";
     }
 
     @PostMapping("/game/{gameId}/addProtocol")
     public String Protocol(@PathVariable String gameId, @Valid @ModelAttribute Protocol protocol, BindingResult bindingResult, Model model) {
-        playerStatsService.validatePlayerStats(protocol.getHomeTeamPlayerStats(),bindingResult,true);
-        playerStatsService.validatePlayerStats(protocol.getAwayTeamPlayerStats(),bindingResult,false);
+        playerStatsService.validatePlayerStats(protocol.getHomeTeamPlayerStats(), bindingResult, true);
+        playerStatsService.validatePlayerStats(protocol.getAwayTeamPlayerStats(), bindingResult, false);
         Game game = gameService.findGameById(Long.valueOf(gameId));
         if (bindingResult.hasErrors()) {
             Team homeTeam = game.getHomeTeam();
@@ -79,7 +79,7 @@ public class ProtocolistController {
             model.addAttribute("awayTeam", awayTeam);
             return "protocolist/protocolForm";
         }
-        protocolService.saveProtocol(protocol,game);
+        protocolService.saveProtocol(protocol, game);
         return "redirect:/";
     }
 }

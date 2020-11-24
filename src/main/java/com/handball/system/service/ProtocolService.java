@@ -20,11 +20,11 @@ public class ProtocolService {
         this.playerStatsRepository = playerStatsRepository;
     }
 
-    public Protocol getProtocolToEdit(Game game, Protocol newProtocol){
+    public Protocol getProtocolToEdit(Game game, Protocol newProtocol) {
         Protocol protocolFind = protocolRepository.findProtocolByGame(game);
-        for(PlayerStats playerStats : protocolFind.getHomeTeamPlayerStats()){
-            for(PlayerStats blankPlayerStats : newProtocol.getHomeTeamPlayerStats()){
-                if(playerStats.getPlayer().getId().equals(blankPlayerStats.getPlayer().getId())){
+        for (PlayerStats playerStats : protocolFind.getHomeTeamPlayerStats()) {
+            for (PlayerStats blankPlayerStats : newProtocol.getHomeTeamPlayerStats()) {
+                if (playerStats.getPlayer().getId().equals(blankPlayerStats.getPlayer().getId())) {
                     blankPlayerStats.setGoals(playerStats.getGoals());
                     blankPlayerStats.setShots(playerStats.getShots());
                     blankPlayerStats.setPlayingGame(true);
@@ -32,9 +32,9 @@ public class ProtocolService {
                 }
             }
         }
-        for(PlayerStats playerStats : protocolFind.getAwayTeamPlayerStats()){
-            for(PlayerStats blankPlayerStats : newProtocol.getAwayTeamPlayerStats()){
-                if(playerStats.getPlayer().getId().equals(blankPlayerStats.getPlayer().getId())){
+        for (PlayerStats playerStats : protocolFind.getAwayTeamPlayerStats()) {
+            for (PlayerStats blankPlayerStats : newProtocol.getAwayTeamPlayerStats()) {
+                if (playerStats.getPlayer().getId().equals(blankPlayerStats.getPlayer().getId())) {
                     blankPlayerStats.setGoals(playerStats.getGoals());
                     blankPlayerStats.setShots(playerStats.getShots());
                     blankPlayerStats.setPlayingGame(true);
@@ -46,10 +46,10 @@ public class ProtocolService {
         return newProtocol;
     }
 
-    public void saveProtocol(Protocol protocol,Game game){
-        if(protocol.getId()!=null){
+    public void saveProtocol(Protocol protocol, Game game) {
+        if (protocol.getId() != null) {
             playerStatsRepository.deleteGamePlayersByProtocol(protocol);
-        }else{
+        } else {
             game.setProtocol(protocol);
         }
         int homeTeamGoals = 0;
@@ -58,11 +58,11 @@ public class ProtocolService {
         List<PlayerStats> awayTeamPlayerStats = protocol.getAwayTeamPlayerStats();
         homeTeamPlayerStats.removeIf(playerStats -> !playerStats.getPlayingGame());
         awayTeamPlayerStats.removeIf(playerStats -> !playerStats.getPlayingGame());
-        for(PlayerStats playerStats : homeTeamPlayerStats){
+        for (PlayerStats playerStats : homeTeamPlayerStats) {
             playerStats.setProtocol(protocol);
             homeTeamGoals = homeTeamGoals + playerStats.getGoals();
         }
-        for(PlayerStats playerStats : awayTeamPlayerStats){
+        for (PlayerStats playerStats : awayTeamPlayerStats) {
             playerStats.setProtocol(protocol);
             awayTeamGoals = awayTeamGoals + playerStats.getGoals();
         }

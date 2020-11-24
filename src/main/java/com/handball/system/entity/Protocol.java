@@ -26,13 +26,13 @@ public class Protocol {
     public Protocol() {
     }
 
-    public Protocol(List<Player> homeTeamPlayers, List<Player> awayTeamPlayers,Game game) {
-        for(Player player : homeTeamPlayers){
-            PlayerStats gamePlayer = new PlayerStats(player,0,0);
+    public Protocol(List<Player> homeTeamPlayers, List<Player> awayTeamPlayers, Game game) {
+        for (Player player : homeTeamPlayers) {
+            PlayerStats gamePlayer = new PlayerStats(player, 0, 0);
             homeTeamPlayerStats.add(gamePlayer);
         }
-        for(Player player : awayTeamPlayers){
-            PlayerStats gamePlayer = new PlayerStats(player,0,0);
+        for (Player player : awayTeamPlayers) {
+            PlayerStats gamePlayer = new PlayerStats(player, 0, 0);
             awayTeamPlayerStats.add(gamePlayer);
         }
     }

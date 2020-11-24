@@ -16,7 +16,7 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public void saveGame(Game game, Tournament tournament){
+    public void saveGame(Game game, Tournament tournament) {
         game.setTournament(tournament);
         game.setHomeTeamGoals(0);
         game.setAwayTeamGoals(0);
@@ -24,13 +24,13 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void endGame(Game game, Set<PlayerStats> homeGamePlayers, Set<PlayerStats> awayGamePlayers){
+    public void endGame(Game game, Set<PlayerStats> homeGamePlayers, Set<PlayerStats> awayGamePlayers) {
         int homeGoals = 0;
         int awayGoals = 0;
-        for(PlayerStats gamePlayer:homeGamePlayers){
+        for (PlayerStats gamePlayer : homeGamePlayers) {
             homeGoals = homeGoals + gamePlayer.getGoals();
         }
-        for(PlayerStats gamePlayer:awayGamePlayers){
+        for (PlayerStats gamePlayer : awayGamePlayers) {
             awayGoals = awayGoals + gamePlayer.getGoals();
         }
         game.setHomeTeamGoals(homeGoals);
@@ -39,25 +39,25 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public Game findGameById(Long id){
+    public Game findGameById(Long id) {
         return gameRepository.findById(id).get();
     }
 
-    public Set<Team> findTeamsInGames(Tournament tournament){
+    public Set<Team> findTeamsInGames(Tournament tournament) {
         Set<Game> games = gameRepository.findAllByTournament(tournament);
         Set<Team> teamsInGames = new HashSet<>();
-        for(Game game : games){
+        for (Game game : games) {
             teamsInGames.add(game.getAwayTeam());
             teamsInGames.add(game.getHomeTeam());
         }
         return teamsInGames;
     }
 
-    public Set<Game> findGamesByProtocolist(User protocolist){
+    public Set<Game> findGamesByProtocolist(User protocolist) {
         return gameRepository.findAllByProtocolist(protocolist);
     }
 
-    public void deleteGameById(Long id){
+    public void deleteGameById(Long id) {
         gameRepository.deleteById(id);
     }
 }

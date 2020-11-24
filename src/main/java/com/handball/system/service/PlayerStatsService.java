@@ -24,9 +24,9 @@ public class PlayerStatsService {
         for (PlayerStats gamePlayer : playerStatsList) {
             if (gamePlayer.getPlayingGame()) {
                 if (gamePlayer.getShots() < gamePlayer.getGoals()) {
-                    if(isHomeTeam){
+                    if (isHomeTeam) {
                         bindingResult.rejectValue("homeTeamPlayerStats[" + counter + "].shots", "error.homeTeamPlayerStats[" + counter + "].shots", "Metieni nevar būt mazāk par iemestajiem vārtiem");
-                    }else{
+                    } else {
                         bindingResult.rejectValue("awayTeamPlayerStats[" + counter + "].shots", "error.awayTeamPlayerStats[" + counter + "].shots", "Metieni nevar būt mazāk par iemestajiem vārtiem");
                     }
                 } else {
@@ -35,11 +35,11 @@ public class PlayerStatsService {
             }
             counter++;
         }
-        if(validPlayers.size()<6){
-            if(isHomeTeam){
-                bindingResult.rejectValue("homeTeamPlayerStats","error.homeTeamPlayerStats","Mājas spēlētāju skaits nevar būt mazāks par 6!");
-            }else{
-                bindingResult.rejectValue("awayTeamPlayerStats","error.awayTeamPlayerStats","Viesu spēlētāju skaits nevar būt mazāks par 6!");
+        if (validPlayers.size() < 6) {
+            if (isHomeTeam) {
+                bindingResult.rejectValue("homeTeamPlayerStats", "error.homeTeamPlayerStats", "Mājas spēlētāju skaits nevar būt mazāks par 6!");
+            } else {
+                bindingResult.rejectValue("awayTeamPlayerStats", "error.awayTeamPlayerStats", "Viesu spēlētāju skaits nevar būt mazāks par 6!");
             }
         }
         return validPlayers;

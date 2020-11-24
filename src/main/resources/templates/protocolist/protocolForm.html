@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<div class="sticky-top" th:insert="fragments/navbar.html"></div>
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
 <body>
 <div class="container main">
     <div class="container info">
-        <form role="form" th:action="@{'/protocolist/game/'+${game.id}+'/addProtocol'}" th:object="${protocol}" th:method="post">
+        <form role="form" th:action="@{'/protocolist/game/'+${game.id}+'/addProtocol'}" th:object="${protocol}"
+              th:method="post">
             <div class="row">
                 <div class="col-md-6">
                     <h4 th:text="${homeTeam.name}"></h4>
@@ -29,31 +25,43 @@
                         <tbody>
                         <tr th:each="playerGame,index : *{homeTeamPlayerStats}">
                             <td>
-                                <input class="form-check-input" type="checkbox" th:field="*{homeTeamPlayerStats[__${index.index}__].playingGame}">
+                                <input class="form-check-input isPlayingGame" type="checkbox"
+                                       th:field="*{homeTeamPlayerStats[__${index.index}__].playingGame}">
                                 <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].id}"/>
                                 <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].protocol}"/>
                             </td>
                             <td>
                                 <p th:text="${playerGame.player.name}"></p>
-                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.name}" th:value="${playerGame.player.name}"/>
+                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.name}"
+                                       th:value="${playerGame.player.name}"/>
                             </td>
                             <td>
                                 <p th:text="${playerGame.player.surname}"></p>
-                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.surname}" th:value="${playerGame.player.surname}"/>
+                                <input type="hidden"
+                                       th:field="*{homeTeamPlayerStats[__${index.index}__].player.surname}"
+                                       th:value="${playerGame.player.surname}"/>
                             </td>
-                            <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.id}" th:value="${playerGame.player.id}">
+                            <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.id}"
+                                   th:value="${playerGame.player.id}">
                             <td>
-                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].shots}" type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].shots')}" th:errors="*{homeTeamPlayerStats[__${index.index}__].shots}"></p>
+                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].shots}"
+                                       type="number" th:readonly="${!playerGame.playingGame}">
+                                <p class="pError bg-danger"
+                                   th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].shots')}"
+                                   th:errors="*{homeTeamPlayerStats[__${index.index}__].shots}"></p>
                             </td>
                             <td>
-                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].goals}" type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].goals')}" th:errors="*{homeTeamPlayerStats[__${index.index}__].goals}"></p>
+                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].goals}"
+                                       type="number" th:readonly="${!playerGame.playingGame}">
+                                <p class="pError bg-danger"
+                                   th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].goals')}"
+                                   th:errors="*{homeTeamPlayerStats[__${index.index}__].goals}"></p>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats')}" th:errors="*{homeTeamPlayerStats}"></p>
+                    <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats')}"
+                       th:errors="*{homeTeamPlayerStats}"></p>
                 </div>
                 <div class="col-md-6">
                     <h4 th:text="${awayTeam.name}"></h4>
@@ -70,30 +78,42 @@
                         <tbody>
                         <tr th:each="playerGame,index : *{awayTeamPlayerStats}">
                             <td>
-                                <input class="form-check-input" type="checkbox" th:field="*{awayTeamPlayerStats[__${index.index}__].playingGame}">
+                                <input class="form-check-input isPlayingGame" type="checkbox"
+                                       th:field="*{awayTeamPlayerStats[__${index.index}__].playingGame}">
                                 <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].id}"/>
                             </td>
                             <td>
                                 <p th:text="${playerGame.player.name}"></p>
-                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.name}" th:value="${playerGame.player.name}"/>
+                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.name}"
+                                       th:value="${playerGame.player.name}"/>
                             </td>
                             <td>
                                 <p th:text="${playerGame.player.surname}"></p>
-                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.surname}" th:value="${playerGame.player.surname}"/>
+                                <input type="hidden"
+                                       th:field="*{awayTeamPlayerStats[__${index.index}__].player.surname}"
+                                       th:value="${playerGame.player.surname}"/>
                             </td>
-                            <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.id}" th:value="${playerGame.player.id}"/>
+                            <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.id}"
+                                   th:value="${playerGame.player.id}"/>
                             <td>
-                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].shots}" type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].shots')}" th:errors="*{awayTeamPlayerStats[__${index.index}__].shots}"></p>
+                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].shots}"
+                                       type="number" th:readonly="${!playerGame.playingGame}">
+                                <p class="pError bg-danger"
+                                   th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].shots')}"
+                                   th:errors="*{awayTeamPlayerStats[__${index.index}__].shots}"></p>
                             </td>
                             <td>
-                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].goals}" type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].goals')}" th:errors="*{awayTeamPlayerStats[__${index.index}__].goals}"></p>
+                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].goals}"
+                                       type="number" th:readonly="${!playerGame.playingGame}">
+                                <p class="pError bg-danger"
+                                   th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].goals')}"
+                                   th:errors="*{awayTeamPlayerStats[__${index.index}__].goals}"></p>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats')}" th:errors="*{awayTeamPlayerStats}"></p>
+                    <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats')}"
+                       th:errors="*{awayTeamPlayerStats}"></p>
                 </div>
             </div>
             <div class="form-group">
@@ -102,9 +122,6 @@
         </form>
     </div>
 </div>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/script.js"></script>
+<th:block th:insert="fragments/script :: scripts"></th:block>
 </body>
 </html>
