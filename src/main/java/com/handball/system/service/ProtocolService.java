@@ -20,6 +20,10 @@ public class ProtocolService {
         this.playerStatsRepository = playerStatsRepository;
     }
 
+    public Protocol getProtocolByGame(Game game){
+        return protocolRepository.findProtocolByGame(game);
+    }
+
     public Protocol getProtocolToEdit(Game game, Protocol newProtocol) {
         Protocol protocolFind = protocolRepository.findProtocolByGame(game);
         for (PlayerStats playerStats : protocolFind.getHomeTeamPlayerStats()) {

@@ -24,21 +24,6 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void endGame(Game game, Set<PlayerStats> homeGamePlayers, Set<PlayerStats> awayGamePlayers) {
-        int homeGoals = 0;
-        int awayGoals = 0;
-        for (PlayerStats gamePlayer : homeGamePlayers) {
-            homeGoals = homeGoals + gamePlayer.getGoals();
-        }
-        for (PlayerStats gamePlayer : awayGamePlayers) {
-            awayGoals = awayGoals + gamePlayer.getGoals();
-        }
-        game.setHomeTeamGoals(homeGoals);
-        game.setAwayTeamGoals(awayGoals);
-        game.setEnded(true);
-        gameRepository.save(game);
-    }
-
     public Game findGameById(Long id) {
         return gameRepository.findById(id).get();
     }

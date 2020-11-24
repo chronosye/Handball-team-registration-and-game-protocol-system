@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head :: head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <a class="btn btn-success" th:href="@{'/tournaments/'+${game.getTournament().id}}">Atpakaļ</a>
+        <div class="row">
+            <div class="col-md-6">
+                <h4 th:text="${game.getHomeTeam().name}"></h4>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Spēlētājs</th>
+                        <th>Metieni</th>
+                        <th>Vārti</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="player:${protocol.getHomeTeamPlayerStats()}">
+                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().name}"></td>
+                        <td th:text="${player.getShots()}"></td>
+                        <td th:text="${player.getGoals()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h4 th:text="${game.getAwayTeam().name}"></h4>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Spēlētājs</th>
+                        <th>Metieni</th>
+                        <th>Vārti</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="player:${protocol.getAwayTeamPlayerStats()}">
+                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().name}"></td>
+                        <td th:text="${player.getShots()}"></td>
+                        <td th:text="${player.getGoals()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2 class="text-center" th:text="${game.getHomeTeamGoals()}+' : '+${game.getAwayTeamGoals()}"></h2>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>

@@ -80,6 +80,6 @@ public class ProtocolistController {
             return "protocolist/protocolForm";
         }
         protocolService.saveProtocol(protocol, game);
-        return "redirect:/";
+        return "redirect:/protocolist";
     }
 }

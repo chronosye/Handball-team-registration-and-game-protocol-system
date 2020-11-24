@@ -3,6 +3,7 @@ package com.handball.system.service;
 import com.handball.system.entity.Role;
 import com.handball.system.entity.User;
 import com.handball.system.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -26,10 +25,8 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Set<User> findAllUsers() {
-        Set<User> users = new HashSet<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
+    public List<User> findAllUsers() {
+        return new ArrayList<>(userRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
     }
 
     public User findUser(Long id) {

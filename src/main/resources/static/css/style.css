@@ -81,3 +81,7 @@ li {
 #addPlayer {
     margin-bottom: 20px;
 }
+
+input[type=checkbox].isPlayingGame{
+    transform: scale(1.5);
+}
