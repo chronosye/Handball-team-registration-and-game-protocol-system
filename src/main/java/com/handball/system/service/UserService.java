@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAllUsers() {
-        return new ArrayList<>(userRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public User findUser(Long id) {

@@ -32,7 +32,7 @@ public class TeamService {
     }
 
     public List<Team> findAllTeams() {
-        return new ArrayList<>(teamRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        return teamRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public Team findTeamById(Long id) {

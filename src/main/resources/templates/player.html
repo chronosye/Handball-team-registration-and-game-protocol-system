@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Spēlētāja informācija</h2>
+                <h6>Vārds</h6>
+                <p th:text="${player.name}"></p>
+                <h6>Uzvārds</h6>
+                <p th:text="${player.surname}"></p>
+                <h6>Pozīcija</h6>
+                <p th:text="${player.position}"></p>
+                <h6>Komanda</h6>
+                <p th:text="${player.team.name}"></p>
+            </div>
+            <div class="col-lg-6">
+                <h2>Spēlētāja statistika</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Spēle</th>
+                        <th>Metieni</th>
+                        <th>Vārti</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="playerStat:${playerStats}">
+                        <td th:text="${playerStat.protocol.game.homeTeam.name} + ' pret '
+                        + ${playerStat.protocol.game.awayTeam.name} + ' (' + ${playerStat.protocol.game.homeTeamGoals}
+                        + ':' + ${playerStat.protocol.game.awayTeamGoals} + ')'">
+                        </td>
+                        <td th:text="${playerStat.shots}"></td>
+                        <td th:text="${playerStat.goals}"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <p class="text-right font-weight-bold">Kopā visās spēlēs:</p>
+                        </td>
+                        <td th:text="${totalShots}"></td>
+                        <td th:text="${totalGoals}"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <a class="btn btn-info" th:href="@{'/teams/'+${teamId}}">Atpakaļ pie komandas</a>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>

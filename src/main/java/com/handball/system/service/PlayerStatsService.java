@@ -1,5 +1,6 @@
 package com.handball.system.service;
 
+import com.handball.system.entity.Player;
 import com.handball.system.entity.PlayerStats;
 import com.handball.system.repository.PlayerStatsRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,26 @@ public class PlayerStatsService {
 
     public PlayerStatsService(PlayerStatsRepository playerStatsRepository) {
         this.playerStatsRepository = playerStatsRepository;
+    }
+
+    public List<PlayerStats> findPlayerStats(Player player) {
+        return playerStatsRepository.findAllByPlayer(player);
+    }
+
+    public int getPlayerTotalShots(List<PlayerStats> playerStats) {
+        int shots = 0;
+        for (PlayerStats stat : playerStats) {
+            shots = shots + stat.getShots();
+        }
+        return shots;
+    }
+
+    public int getPlayerTotalGoals(List<PlayerStats> playerStats) {
+        int goals = 0;
+        for (PlayerStats stat : playerStats) {
+            goals = goals + stat.getGoals();
+        }
+        return goals;
     }
 
     public Set<PlayerStats> validatePlayerStats(List<PlayerStats> playerStatsList, BindingResult bindingResult, boolean isHomeTeam) {

@@ -6,6 +6,11 @@ body {
     font-family: "Roboto", sans-serif;
     background-attachment: fixed;
     background-size: cover;
+    height: 100%;
+}
+
+html {
+    height: 100%;
 }
 
 .login {
@@ -44,6 +49,7 @@ a:hover {
     padding-top: 20px;
     padding-bottom: 20px;
     background: rgba(224, 224, 224, 0.85);
+    height: 93%;
 }
 
 .container.info {
@@ -82,6 +88,6 @@ li {
     margin-bottom: 20px;
 }
 
-input[type=checkbox].isPlayingGame{
+input[type=checkbox].isPlayingGame {
     transform: scale(1.5);
 }
