@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.transaction.Transactional;
+
 @Controller
+@Transactional
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -23,37 +26,45 @@ public class AdminController {
         return "admin/admin";
     }
 
-    //FUNCTIONALITY FOR ORGANIZERS STARTS HERE
-    @GetMapping("/editOrganizer")
+    @GetMapping("/editRoles")
     public String showUsers(Model model) {
         model.addAttribute("users", userService.findAllUsers());
-        return "admin/editOrganizer";
+        return "admin/editRoles";
     }
 
-    @GetMapping("/editOrganizer/add/{UserId}")
+    @GetMapping("/editRoles/addOrganizer/{UserId}")
     public String addOrganizer(@PathVariable String UserId) {
         userService.addRole(Long.valueOf(UserId), Role.ORGANIZER);
-        return "redirect:/admin/editOrganizer";
+        return "redirect:/admin/editRoles";
     }
 
-    @GetMapping("/editOrganizer/remove/{UserId}")
-    public String removeOrganizer(@PathVariable String UserId) {
-        userService.removeRole(Long.valueOf(UserId), Role.ORGANIZER);
-        return "redirect:/admin/editOrganizer";
-    }
-    //FUNCTIONALITY FOR ORGANIZERS ENDS HERE
-
-    //FUNCTIONALITY FOR MANAGER STARTS HERE
-    @GetMapping("/addManager")
-    public String showManagerUsers(Model model) {
-        model.addAttribute("users", userService.findAllUsers());
-        return "admin/addManager";
+    @GetMapping("/editRoles/removeOrganizer/{userId}")
+    public String removeOrganizer(@PathVariable String userId) {
+        userService.removeRole(Long.valueOf(userId), Role.ORGANIZER);
+        return "redirect:/admin/editRoles";
     }
 
-    @GetMapping("/addManager/add/{UserId}")
-    public String addManager(@PathVariable String UserId) {
-        userService.addRole(Long.valueOf(UserId), Role.MANAGER);
-        return "redirect:/admin/addManager";
+    @GetMapping("/editRoles/addManager/{userId}")
+    public String addManager(@PathVariable String userId) {
+        userService.addRole(Long.valueOf(userId), Role.MANAGER);
+        return "redirect:/admin/editRoles";
     }
-    //FUNCTIONALITY FOR MANAGER ENDS HERE
+
+    @GetMapping("/editRoles/removeManager/{userId}")
+    public String removeManager(@PathVariable String userId) {
+        userService.removeRole(Long.valueOf(userId), Role.MANAGER);
+        return "redirect:/admin/editRoles";
+    }
+
+    @GetMapping("/editRoles/addProtocolist/{userId}")
+    public String addProtocolist(@PathVariable String userId) {
+        userService.addRole(Long.valueOf(userId), Role.PROTOCOLIST);
+        return "redirect:/admin/editRoles";
+    }
+
+    @GetMapping("/editRoles/removeProtocolist/{userId}")
+    public String removeProtocolist(@PathVariable String userId) {
+        userService.removeRole(Long.valueOf(userId), Role.PROTOCOLIST);
+        return "redirect:/admin/editRoles";
+    }
 }

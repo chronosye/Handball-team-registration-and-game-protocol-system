@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <h2>Lietotāju saraksts</h2>
+        <table id="users" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Vārds</th>
+                <th>Uzvārds</th>
+                <th>E-pasts</th>
+                <th>Loma</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.surname}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <ul class="roles">
+                        <li th:each="role : ${user.roles}" th:text="${role.name() + ' '}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <a class="btn btn-success" th:unless="${user.hasRole('MANAGER')}"
+                       th:href="@{'/admin/editRoles/addManager/'+${user.id}}">Pievienot menedžera lomu</a>
+                    <a class="btn btn-danger" th:if="${user.hasRole('MANAGER')}"
+                       th:href="@{'/admin/editRoles/removeManager/'+${user.id}}">Noņemt menedžera lomu</a>
+                </td>
+                <td>
+                    <a class="btn btn-success" th:unless="${user.hasRole('ORGANIZER')}"
+                       th:href="@{'/admin/editRoles/addOrganizer/'+${user.id}}">Pievienot organizatora lomu</a>
+                    <a class="btn btn-danger" th:if="${user.hasRole('ORGANIZER')}"
+                       th:href="@{'/admin/editRoles/removeOrganizer/'+${user.id}}">Noņemt organizatora lomu</a>
+                </td>
+                <td>
+                    <a class="btn btn-success" th:unless="${user.hasRole('PROTOCOLIST')}"
+                       th:href="@{'/admin/editRoles/addProtocolist/'+${user.id}}">Pievienot protokolista lomu</a>
+                    <a class="btn btn-danger" th:if="${user.hasRole('PROTOCOLIST')}"
+                       th:href="@{'/admin/editRoles/removeProtocolist/'+${user.id}}">Noņemt protokolista lomu</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>

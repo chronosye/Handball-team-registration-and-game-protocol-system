@@ -1,5 +1,6 @@
 package com.handball.system.repository;
 
+import com.handball.system.entity.Team;
 import com.handball.system.entity.Tournament;
 import com.handball.system.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,8 @@ import java.util.Set;
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     Set<Tournament> findByOrganizer(User user);
+
+    Set<Tournament> findAllByTeamsContaining(Team team);
+
+    void deleteAllByOrganizer(User user);
 }
