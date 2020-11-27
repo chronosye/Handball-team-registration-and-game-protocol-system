@@ -1,6 +1,5 @@
 package com.handball.system.service;
 
-import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
 import com.handball.system.entity.User;
 import com.handball.system.repository.PlayerRepository;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,5 +44,9 @@ public class TeamService {
     public void saveTeam(Team team, User manager) {
         team.setManager(manager);
         teamRepository.save(team);
+    }
+
+    public void deleteTeamByManager(User user) {
+        teamRepository.deleteAllByManager(user);
     }
 }

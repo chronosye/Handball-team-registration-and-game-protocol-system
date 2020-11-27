@@ -3,9 +3,10 @@ package com.handball.system.service;
 import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
 import com.handball.system.repository.PlayerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -17,27 +18,24 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    public Player findPlayerByIdAndTeam(Long id, Team team) {
+        return playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     public Player findPlayerById(Long id) {
-        return playerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        return playerRepository.findById(id).get();
     }
 
     public Player savePlayer(Player player) {
         return playerRepository.save(player);
     }
 
-    public Player updatePlayer(Player player, Long id) {
-        Player foundPlayer = playerRepository.findById(id).get();
-        foundPlayer.setName(player.getName());
-        foundPlayer.setSurname(player.getSurname());
-        foundPlayer.setPosition(player.getPosition());
-        return playerRepository.save(foundPlayer);
-    }
-
     public List<Player> findPlayersByTeam(Team team) {
         return playerRepository.findPlayersByTeam(team);
     }
 
-    public void deletePlayerById(Long id) {
-        playerRepository.deleteById(id);
+    public void deletePlayerByIdAndTeam(Long id, Team team) {
+        Player player = playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        playerRepository.delete(player);
     }
 }
