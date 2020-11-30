@@ -97,7 +97,7 @@ public class OrganizerController {
     @GetMapping("/tournaments/{tournamentId}/createGame")
     public String createTournamentGame(@PathVariable String tournamentId, Model model, Game game, @AuthenticationPrincipal User user) {
         model.addAttribute("game", game);
-        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
+        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
         model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
         return "organizer/gameForm";
     }
@@ -111,7 +111,7 @@ public class OrganizerController {
         }
         if (bindingResult.hasErrors()) {
             model.addAttribute("game", game);
-            model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
+            model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
             model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
             return "organizer/gameForm";
         }
@@ -123,7 +123,7 @@ public class OrganizerController {
     @GetMapping("/tournaments/{tournamentId}/game/{gameId}/edit")
     public String editGame(@PathVariable String tournamentId, @PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("game", gameService.findGameById(Long.valueOf(gameId)));
-        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
+        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
         model.addAttribute("tournamentId", tournamentId);
         model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
         return "organizer/gameForm";
@@ -132,8 +132,7 @@ public class OrganizerController {
     //delete tournament game
     @GetMapping("/tournaments/{tournamentId}/game/{gameId}/delete")
     public String deleteGame(@PathVariable String tournamentId, @PathVariable String gameId, @AuthenticationPrincipal User user) {
-        tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
-        gameService.deleteGameById(Long.valueOf(gameId));
+        gameService.deleteGameByIdAndTournament(Long.valueOf(gameId), tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
         return "redirect:/organizer/tournaments/" + tournamentId;
     }
 }

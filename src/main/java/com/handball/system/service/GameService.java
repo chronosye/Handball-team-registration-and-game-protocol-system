@@ -2,7 +2,9 @@ package com.handball.system.service;
 
 import com.handball.system.entity.*;
 import com.handball.system.repository.GameRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +44,8 @@ public class GameService {
         return gameRepository.findAllByProtocolist(protocolist);
     }
 
-    public void deleteGameById(Long id) {
-        gameRepository.deleteById(id);
+    public void deleteGameByIdAndTournament(Long id, Tournament tournament) {
+        Game game = gameRepository.findByIdAndTournament(id, tournament).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        gameRepository.delete(game);
     }
 }
