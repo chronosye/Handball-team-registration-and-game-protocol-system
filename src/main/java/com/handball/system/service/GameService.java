@@ -30,6 +30,14 @@ public class GameService {
         return gameRepository.findById(id).get();
     }
 
+    public Game findGameByIdAndTournament(Long id, Tournament tournament) {
+        return gameRepository.findByIdAndTournament(id, tournament).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public Game findGameByIdAndProtocolist(Long id, User user) {
+        return gameRepository.findByIdAndProtocolist(id, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     public Set<Team> findTeamsInGames(Tournament tournament) {
         Set<Game> games = gameRepository.findAllByTournament(tournament);
         Set<Team> teamsInGames = new HashSet<>();

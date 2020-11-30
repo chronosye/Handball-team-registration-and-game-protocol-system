@@ -24,14 +24,12 @@ public class OrganizerController {
     private final TeamService teamService;
     private final GameService gameService;
     private final UserService userService;
-    private final PlayerStatsService playerStatsService;
 
-    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService, PlayerStatsService playerStatsService) {
+    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService) {
         this.tournamentService = tournamentService;
         this.teamService = teamService;
         this.gameService = gameService;
         this.userService = userService;
-        this.playerStatsService = playerStatsService;
     }
 
     @GetMapping("")
@@ -122,8 +120,9 @@ public class OrganizerController {
     //edit tournament game
     @GetMapping("/tournaments/{tournamentId}/game/{gameId}/edit")
     public String editGame(@PathVariable String tournamentId, @PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("game", gameService.findGameById(Long.valueOf(gameId)));
-        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
+        Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
+        model.addAttribute("game", gameService.findGameByIdAndTournament(Long.valueOf(gameId), tournament));
+        model.addAttribute("teams", tournament.getTeams());
         model.addAttribute("tournamentId", tournamentId);
         model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
         return "organizer/gameForm";

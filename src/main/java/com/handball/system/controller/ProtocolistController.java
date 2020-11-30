@@ -41,8 +41,8 @@ public class ProtocolistController {
     }
 
     @GetMapping("/game/{gameId}/addProtocol")
-    public String addProtocol(@PathVariable String gameId, Model model) {
-        Game game = gameService.findGameById(Long.valueOf(gameId));
+    public String addProtocol(@PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
+        Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
         Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
@@ -54,8 +54,8 @@ public class ProtocolistController {
     }
 
     @GetMapping("/game/{gameId}/editProtocol")
-    public String editProtocol(@PathVariable String gameId, Model model) {
-        Game game = gameService.findGameById(Long.valueOf(gameId));
+    public String editProtocol(@PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
+        Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
         Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
@@ -67,10 +67,10 @@ public class ProtocolistController {
     }
 
     @PostMapping("/game/{gameId}/addProtocol")
-    public String Protocol(@PathVariable String gameId, @Valid @ModelAttribute Protocol protocol, BindingResult bindingResult, Model model) {
+    public String Protocol(@PathVariable String gameId, @Valid @ModelAttribute Protocol protocol, BindingResult bindingResult, Model model, @AuthenticationPrincipal User user) {
         playerStatsService.validatePlayerStats(protocol.getHomeTeamPlayerStats(), bindingResult, true);
         playerStatsService.validatePlayerStats(protocol.getAwayTeamPlayerStats(), bindingResult, false);
-        Game game = gameService.findGameById(Long.valueOf(gameId));
+        Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
         if (bindingResult.hasErrors()) {
             Team homeTeam = game.getHomeTeam();
             Team awayTeam = game.getAwayTeam();
