@@ -4,9 +4,12 @@ import com.handball.system.entity.Team;
 import com.handball.system.entity.Tournament;
 import com.handball.system.entity.User;
 import com.handball.system.repository.TournamentRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,10 +26,8 @@ public class TournamentService {
         return tournamentRepository.save(tournament);
     }
 
-    public Set<Tournament> findAllTournaments() {
-        Set<Tournament> tournaments = new HashSet<>();
-        tournamentRepository.findAll().forEach(tournaments::add);
-        return tournaments;
+    public List<Tournament> findAllTournaments() {
+        return tournamentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public void addTeamToTournament(Tournament tournament, Team team) {
@@ -40,12 +41,14 @@ public class TournamentService {
     }
 
     public Set<Tournament> findTournamentsByOrganizer(User user) {
-        Set<Tournament> tournaments = new HashSet<>();
-        tournamentRepository.findByOrganizer(user).forEach(tournaments::add);
-        return tournaments;
+        return tournamentRepository.findByOrganizer(user);
     }
 
     public Tournament findTournamentById(Long id) {
-        return tournamentRepository.findById(id).get();
+        return tournamentRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public Tournament findTournamentByIdAndOrganizer(Long id, User user) {
+        return tournamentRepository.findByIdAndOrganizer(id, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

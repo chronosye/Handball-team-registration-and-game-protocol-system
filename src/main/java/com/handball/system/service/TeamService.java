@@ -1,16 +1,14 @@
 package com.handball.system.service;
 
-import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
 import com.handball.system.entity.User;
 import com.handball.system.repository.PlayerRepository;
 import com.handball.system.repository.TeamRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TeamService {
@@ -31,10 +29,8 @@ public class TeamService {
         }
     }
 
-    public Set<Team> findAllTeams() {
-        Set<Team> teams = new HashSet<>();
-        teamRepository.findAll().forEach(teams::add);
-        return teams;
+    public List<Team> findAllTeams() {
+        return teamRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public Team findTeamById(Long id) {
@@ -45,17 +41,12 @@ public class TeamService {
         return teamRepository.findByManager(user);
     }
 
-    public Team saveTeam(Team team, User manager) {
+    public void saveTeam(Team team, User manager) {
         team.setManager(manager);
-        return teamRepository.save(team);
+        teamRepository.save(team);
     }
 
-    public void deleteTeamById(Long id) {
-        Team team = findTeamById(id);
-        List<Player> teamPlayers = playerRepository.findPlayersByTeam(team);
-        for (Player player : teamPlayers) {
-            playerRepository.delete(player);
-        }
-        teamRepository.deleteById(id);
+    public void deleteTeamByManager(User user) {
+        teamRepository.deleteAllByManager(user);
     }
 }

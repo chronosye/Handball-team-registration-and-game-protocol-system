@@ -73,8 +73,8 @@ public class ManagerController {
 
     //Editing team player
     @GetMapping("/team/editPlayer/{playerId}")
-    public String updatePlayer(@PathVariable String playerId, Model model) {
-        model.addAttribute("player", playerService.findPlayerById(Long.valueOf(playerId)));
+    public String updatePlayer(@AuthenticationPrincipal User user, @PathVariable String playerId, Model model) {
+        model.addAttribute("player", playerService.findPlayerByIdAndTeam(Long.valueOf(playerId), teamService.findTeamByManager(user)));
         return "manager/playerForm";
     }
 
@@ -91,8 +91,8 @@ public class ManagerController {
 
     //deleting team player
     @GetMapping("/team/deletePlayer/{playerId}")
-    public String deletePlayer(@PathVariable String playerId) {
-        playerService.deletePlayerById(Long.valueOf(playerId));
+    public String deletePlayer(@AuthenticationPrincipal User user, @PathVariable String playerId) {
+        playerService.deletePlayerByIdAndTeam(Long.valueOf(playerId), teamService.findTeamByManager(user));
         return "redirect:/manager/team";
     }
 }

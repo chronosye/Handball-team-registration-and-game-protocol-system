@@ -17,6 +17,7 @@ public class Tournament {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @OrderBy("name ASC")
     @JoinTable(
             name = "tournaments_teams",
             joinColumns = @JoinColumn(name = "tournament_id"),
@@ -28,6 +29,7 @@ public class Tournament {
     private User organizer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament")
+    @OrderBy("date ASC")
     private Set<Game> games = new HashSet<>();
 
     public Long getId() {

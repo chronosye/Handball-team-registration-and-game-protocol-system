@@ -1,12 +1,14 @@
 package com.handball.system.service;
 
 import com.handball.system.entity.Game;
+import com.handball.system.entity.Player;
 import com.handball.system.entity.PlayerStats;
 import com.handball.system.entity.Protocol;
 import com.handball.system.repository.PlayerStatsRepository;
 import com.handball.system.repository.ProtocolRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +20,10 @@ public class ProtocolService {
     public ProtocolService(ProtocolRepository protocolRepository, PlayerStatsRepository playerStatsRepository) {
         this.protocolRepository = protocolRepository;
         this.playerStatsRepository = playerStatsRepository;
+    }
+
+    public Protocol getProtocolByGame(Game game){
+        return protocolRepository.findProtocolByGame(game);
     }
 
     public Protocol getProtocolToEdit(Game game, Protocol newProtocol) {

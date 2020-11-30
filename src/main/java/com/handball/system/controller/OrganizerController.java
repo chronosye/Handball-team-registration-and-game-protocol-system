@@ -24,14 +24,12 @@ public class OrganizerController {
     private final TeamService teamService;
     private final GameService gameService;
     private final UserService userService;
-    private final PlayerStatsService playerStatsService;
 
-    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService, PlayerStatsService playerStatsService) {
+    public OrganizerController(TournamentService tournamentService, TeamService teamService, GameService gameService, UserService userService) {
         this.tournamentService = tournamentService;
         this.teamService = teamService;
         this.gameService = gameService;
         this.userService = userService;
-        this.playerStatsService = playerStatsService;
     }
 
     @GetMapping("")
@@ -48,31 +46,31 @@ public class OrganizerController {
 
     //showing tournament info
     @GetMapping("/tournaments/{tournamentId}")
-    public String getTournament(@PathVariable String tournamentId, Model model) {
-        model.addAttribute("tournament", tournamentService.findTournamentById(Long.valueOf(tournamentId)));
+    public String getTournament(@PathVariable String tournamentId, Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("tournament", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
         return "organizer/tournament";
     }
 
     //show list of teams to add for tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams")
-    public String showTeamsToEdit(@PathVariable String tournamentId, Model model) {
+    public String showTeamsToEdit(@PathVariable String tournamentId, Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("teams", teamService.findAllTeams());
-        model.addAttribute("tournament", tournamentService.findTournamentById(Long.valueOf(tournamentId)));
-        model.addAttribute("gameTeams", gameService.findTeamsInGames(tournamentService.findTournamentById(Long.valueOf(tournamentId))));
+        model.addAttribute("tournament", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
+        model.addAttribute("gameTeams", gameService.findTeamsInGames(tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user)));
         return "organizer/showTeams";
     }
 
     //add team to tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams/{teamId}/add")
-    public String addTeamToTournament(@PathVariable String tournamentId, @PathVariable String teamId) {
-        tournamentService.addTeamToTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)), teamService.findTeamById(Long.valueOf(teamId)));
+    public String addTeamToTournament(@PathVariable String tournamentId, @PathVariable String teamId, @AuthenticationPrincipal User user) {
+        tournamentService.addTeamToTournament(tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user), teamService.findTeamById(Long.valueOf(teamId)));
         return "redirect:/organizer/tournaments/" + tournamentId + "/editTeams";
     }
 
     //remove team from tournament
     @GetMapping("/tournaments/{tournamentId}/editTeams/{teamId}/remove")
-    public String removeTeamFromTournament(@PathVariable String tournamentId, @PathVariable String teamId) {
-        tournamentService.removeTeamFromTournament(tournamentService.findTournamentById(Long.valueOf(tournamentId)), teamService.findTeamById(Long.valueOf(teamId)));
+    public String removeTeamFromTournament(@PathVariable String tournamentId, @PathVariable String teamId, @AuthenticationPrincipal User user) {
+        tournamentService.removeTeamFromTournament(tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user), teamService.findTeamById(Long.valueOf(teamId)));
         return "redirect:/organizer/tournaments/" + tournamentId + "/editTeams";
     }
 
@@ -95,35 +93,36 @@ public class OrganizerController {
 
     //creating new game for tournament
     @GetMapping("/tournaments/{tournamentId}/createGame")
-    public String createTournamentGame(@PathVariable String tournamentId, Model model, Game game) {
+    public String createTournamentGame(@PathVariable String tournamentId, Model model, Game game, @AuthenticationPrincipal User user) {
         model.addAttribute("game", game);
-        model.addAttribute("teams", tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
+        model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
         model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
         return "organizer/gameForm";
     }
 
     //saving new game into database
     @PostMapping("/tournaments/{tournamentId}/game")
-    public String saveOrUpdateTournamentGame(@Valid Game game, BindingResult bindingResult, @PathVariable String tournamentId, Model model) {
+    public String saveOrUpdateTournamentGame(@Valid Game game, BindingResult bindingResult, @PathVariable String tournamentId, Model model, @AuthenticationPrincipal User user) {
         if (game.getAwayTeam() == game.getHomeTeam() && game.getAwayTeam() != null) {
             bindingResult.rejectValue("homeTeam", "errors.homeTeam", "Mājas un viesu komandas nevar būt vienādas");
             bindingResult.rejectValue("awayTeam", "errors.awayTeam", "Mājas un viesu komandas nevar būt vienādas");
         }
         if (bindingResult.hasErrors()) {
             model.addAttribute("game", game);
-            model.addAttribute("teams", tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
+            model.addAttribute("teams", tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user).getTeams());
             model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
             return "organizer/gameForm";
         }
-        gameService.saveGame(game, tournamentService.findTournamentById(Long.valueOf(tournamentId)));
+        gameService.saveGame(game, tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
         return "redirect:/organizer/tournaments/" + tournamentId;
     }
 
     //edit tournament game
     @GetMapping("/tournaments/{tournamentId}/game/{gameId}/edit")
-    public String editGame(@PathVariable String tournamentId, @PathVariable String gameId, Model model) {
-        model.addAttribute("game", gameService.findGameById(Long.valueOf(gameId)));
-        model.addAttribute("teams", tournamentService.findTournamentById(Long.valueOf(tournamentId)).getTeams());
+    public String editGame(@PathVariable String tournamentId, @PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
+        Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
+        model.addAttribute("game", gameService.findGameByIdAndTournament(Long.valueOf(gameId), tournament));
+        model.addAttribute("teams", tournament.getTeams());
         model.addAttribute("tournamentId", tournamentId);
         model.addAttribute("protocolists", userService.findAllUsersByRole(Role.PROTOCOLIST));
         return "organizer/gameForm";
@@ -131,8 +130,8 @@ public class OrganizerController {
 
     //delete tournament game
     @GetMapping("/tournaments/{tournamentId}/game/{gameId}/delete")
-    public String deleteGame(@PathVariable String tournamentId, @PathVariable String gameId) {
-        gameService.deleteGameById(Long.valueOf(gameId));
+    public String deleteGame(@PathVariable String tournamentId, @PathVariable String gameId, @AuthenticationPrincipal User user) {
+        gameService.deleteGameByIdAndTournament(Long.valueOf(gameId), tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
         return "redirect:/organizer/tournaments/" + tournamentId;
     }
 }

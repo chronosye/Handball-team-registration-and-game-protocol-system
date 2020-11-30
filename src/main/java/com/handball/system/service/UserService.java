@@ -1,8 +1,11 @@
 package com.handball.system.service;
 
-import com.handball.system.entity.Role;
-import com.handball.system.entity.User;
+import com.handball.system.entity.*;
+import com.handball.system.repository.GameRepository;
+import com.handball.system.repository.TeamRepository;
+import com.handball.system.repository.TournamentRepository;
 import com.handball.system.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,26 +13,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TournamentRepository tournamentRepository;
+    private final TeamRepository teamRepository;
+    private final GameRepository gameRepository;
 
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TournamentRepository tournamentRepository, TeamRepository teamRepository, GameRepository gameRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tournamentRepository = tournamentRepository;
+        this.teamRepository = teamRepository;
+        this.gameRepository = gameRepository;
     }
 
-    public Set<User> findAllUsers() {
-        Set<User> users = new HashSet<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
+    public List<User> findAllUsers() {
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public User findUser(Long id) {
@@ -44,23 +49,42 @@ public class UserService implements UserDetailsService {
     }
 
     public void addRole(Long id, Role role) {
-        Optional<User> user = userRepository.findById(id);
-        User foundUser;
-        foundUser = user.get();
-        Set<Role> roles = foundUser.getRoles();
+        User user = userRepository.findById(id).get();
+        Set<Role> roles = user.getRoles();
         roles.add(role);
-        foundUser.setRoles(roles);
-        userRepository.save(foundUser);
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 
     public void removeRole(Long id, Role role) {
-        Optional<User> user = userRepository.findById(id);
-        User foundUser;
-        foundUser = user.get();
-        Set<Role> roles = foundUser.getRoles();
+        User user = userRepository.findById(id).get();
+        if (role == Role.ORGANIZER) {
+            tournamentRepository.deleteAllByOrganizer(user);
+        } else if (role == Role.MANAGER) {
+            Team team = teamRepository.findByManager(user);
+            if (team != null) {
+                Set<Game> managerTeamGames = gameRepository.findAllByHomeTeamOrAwayTeam(team, team);
+                if (managerTeamGames != null) {
+                    for (Game game : managerTeamGames) {
+                        gameRepository.delete(game);
+                    }
+                }
+                Set<Tournament> managerTeamTournaments = tournamentRepository.findAllByTeamsContaining(team);
+                if (managerTeamTournaments != null) {
+                    for (Tournament tournament : managerTeamTournaments) {
+                        tournament.getTeams().remove(team);
+                        tournamentRepository.save(tournament);
+                    }
+                }
+                teamRepository.deleteAllByManager(user);
+            }
+        } else if (role == Role.PROTOCOLIST) {
+            gameRepository.deleteAllByProtocolist(user);
+        }
+        Set<Role> roles = user.getRoles();
         roles.remove(role);
-        foundUser.setRoles(roles);
-        userRepository.save(foundUser);
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 
     public User updateUser(User user) {
