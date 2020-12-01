@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <form role="form" th:action="@{'/profile/editData'}" th:object="${user}" th:method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <h6>Vārds</h6>
+                <input class="form-control" th:field="*{name}" name="name" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Uzvārds</h6>
+                <input class="form-control" th:field="*{surname}" name="surname" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></p>
+            </div>
+            <div class="form-group">
+                <h6>E-pasts</h6>
+                <input class="form-control" th:field="*{email}" name="email" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" type="submit">Saglabāt</button>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>

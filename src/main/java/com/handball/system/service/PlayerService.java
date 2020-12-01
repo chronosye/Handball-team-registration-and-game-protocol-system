@@ -23,11 +23,11 @@ public class PlayerService {
     }
 
     public Player findPlayerById(Long id) {
-        return playerRepository.findById(id).get();
+        return playerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Player savePlayer(Player player) {
-        return playerRepository.save(player);
+    public void savePlayer(Player player) {
+        playerRepository.save(player);
     }
 
     public List<Player> findPlayersByTeam(Team team) {

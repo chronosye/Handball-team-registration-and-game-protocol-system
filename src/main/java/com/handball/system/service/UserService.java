@@ -11,9 +11,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,11 +38,6 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAllUsers() {
         return userRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-    }
-
-    public User findUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.get();
     }
 
     public Set<User> findAllUsersByRole(Role role) {
@@ -87,18 +85,38 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User updateUser(User user) {
+    public User updateUserData(User formUser, User user) {
+        user.setName(formUser.getName());
+        user.setSurname(formUser.getSurname());
+        user.setEmail(formUser.getEmail());
+        userRepository.save(user);
+        return user;
+    }
+
+    public boolean validatePasswordChange(User user, String oldPassword, String newPassword, String newPasswordRepeat, Model model) {
+        boolean flag = false;
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            model.addAttribute("oldPasswordError", "Ievadītā vecā parole nav pareiza!");
+            flag = true;
+        } else if (newPassword.length() < 8) {
+            model.addAttribute("newPasswordError", "Jaunā parole nevar būt īsāka par 8 simboliem");
+            flag = true;
+        } else if (!newPassword.equals(newPasswordRepeat)) {
+            model.addAttribute("newPasswordRepeatError", "Atkārtotā parole nav vienāda!");
+            flag = true;
+        }
+        return flag;
+    }
+
+    public User updateUserPassword(User user, String password) {
+        final String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
         userRepository.save(user);
         return user;
     }
 
     public boolean userExists(String email) {
         return userRepository.existsByEmail(email);
-    }
-
-    public void deleteUser(Long id) {
-        User userToDelete = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
-        userRepository.delete(userToDelete);
     }
 
     public void registerUser(User user) {
