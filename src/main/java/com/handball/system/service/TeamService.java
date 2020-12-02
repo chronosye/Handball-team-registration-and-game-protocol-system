@@ -1,5 +1,6 @@
 package com.handball.system.service;
 
+import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
 import com.handball.system.entity.User;
 import com.handball.system.repository.TeamRepository;
@@ -40,6 +41,9 @@ public class TeamService {
 
     public void saveTeam(Team team, User manager) {
         team.setManager(manager);
+        for (Player player : team.getPlayers()) {
+            player.setTeam(team);
+        }
         teamRepository.save(team);
     }
 }

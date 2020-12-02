@@ -26,7 +26,7 @@
                     spēlētāju</a>
             </td>
             <td>
-                <a class="btn btn-danger btn-block" th:href="@{'/manager/team/deletePlayer/'+${player.id}}">Dzēst
+                <a class="btn btn-danger btn-block" th:unless="${#lists.size(team.players)<7}" th:href="@{'/manager/team/deletePlayer/'+${player.id}}">Dzēst
                     spēlētāju</a>
             </td>
         </tr>

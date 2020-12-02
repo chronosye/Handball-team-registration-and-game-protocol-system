@@ -7,7 +7,8 @@
     <div class="container info">
         <h4 th:text="${tournament.name}"></h4>
         <h6>Komandas</h6>
-        <table class="table table-striped table-bordered">
+        <h3 th:if="${#sets.isEmpty(tournament.teams)}">Pašlaik nav nevienu pieteikušos komandu!</h3>
+        <table class="table table-striped table-bordered" th:unless="${#sets.isEmpty(tournament.teams)}">
             <thead>
             <tr>
                 <th>Komandas nosaukums</th>
@@ -27,7 +28,8 @@
         <hr>
 
         <h6>Spēļu kalendārs</h6>
-        <table class="table table-striped table-bordered">
+        <h3 th:if="${#sets.isEmpty(tournament.games)}">Pašlaik nav nevienu spēļu!</h3>
+        <table class="table table-striped table-bordered" th:unless="${#sets.isEmpty(tournament.games)}">
             <thead>
             <tr>
                 <th>Mājas komanda</th>

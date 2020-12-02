@@ -91,7 +91,7 @@ public class ManagerController {
 
     //deleting team player
     @GetMapping("/team/deletePlayer/{playerId}")
-    public String deletePlayer(@AuthenticationPrincipal User user, @PathVariable String playerId) {
+    public String deletePlayer(@PathVariable String playerId, @AuthenticationPrincipal User user) {
         playerService.deletePlayerByIdAndTeam(Long.valueOf(playerId), teamService.findTeamByManager(user));
         return "redirect:/manager/team";
     }

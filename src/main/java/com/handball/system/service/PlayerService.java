@@ -35,7 +35,12 @@ public class PlayerService {
     }
 
     public void deletePlayerByIdAndTeam(Long id, Team team) {
-        Player player = playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        playerRepository.delete(player);
+        List<Player> players = playerRepository.findPlayersByTeam(team);
+        if(players.size()>6){
+            Player player = playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            playerRepository.delete(player);
+        }else{
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 }
