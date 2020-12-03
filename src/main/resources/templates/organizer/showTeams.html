@@ -20,7 +20,7 @@
                     <a class="btn btn-success" th:unless="${team.tournaments.contains(tournament)}"
                        th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams/'+${team.id}+'/add'}">Pievienot
                         komandu turnīram</a>
-                    <a class="btn btn-danger"
+                    <a class="btn btn-dark"
                        th:if="${team.tournaments.contains(tournament)} and not ${gameTeams.contains(team)}"
                        th:href="@{'/organizer/tournaments/'+${tournament.id}+'/editTeams/'+${team.id}+'/remove'}">Noņemt
                         komandu no turnīra</a>
@@ -30,7 +30,7 @@
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-info" th:href="@{'/organizer/tournaments/'+${tournament.id}}">Atpakaļ uz turnīra
+        <a class="btn btn-secondary" th:href="@{'/organizer/tournaments/'+${tournament.id}}">Atpakaļ uz turnīra
             informāciju</a>
     </div>
 </div>

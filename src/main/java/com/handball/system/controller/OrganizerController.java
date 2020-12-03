@@ -134,4 +134,11 @@ public class OrganizerController {
         gameService.deleteGameByIdAndTournament(Long.valueOf(gameId), tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user));
         return "redirect:/organizer/tournaments/" + tournamentId;
     }
+
+    @GetMapping("/tournaments/{tournamentId}/delete")
+    public String deleteTournament(@PathVariable String tournamentId, @AuthenticationPrincipal User user){
+        Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId),user);
+        tournamentService.deleteTournament(tournament);
+        return "redirect:/organizer/tournaments";
+    }
 }

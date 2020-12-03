@@ -5,121 +5,128 @@
 <body>
 <div class="container main">
     <div class="container info">
-        <form role="form" th:action="@{'/protocolist/game/'+${game.id}+'/addProtocol'}" th:object="${protocol}"
-              th:method="post">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h4 th:text="${homeTeam.name}"></h4>
-                    <input type="hidden" th:field="*{id}"/>
-                    <input type="hidden" th:name="game" th:id="game" th:value="${game.id}"/>
-                    <table id="homeTeamPlayers" class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Piedalās</th>
-                            <th>Vārds</th>
-                            <th>Uzvārds</th>
-                            <th>Metieni</th>
-                            <th>Iemestie vārti</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="playerGame,index : *{homeTeamPlayerStats}">
-                            <td>
-                                <input class="form-check-input isPlayingGame" type="checkbox"
-                                       th:field="*{homeTeamPlayerStats[__${index.index}__].playingGame}">
-                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].id}"/>
-                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].protocol}"/>
-                            </td>
-                            <td>
-                                <p th:text="${playerGame.player.name}"></p>
-                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.name}"
-                                       th:value="${playerGame.player.name}"/>
-                            </td>
-                            <td>
-                                <p th:text="${playerGame.player.surname}"></p>
-                                <input type="hidden"
-                                       th:field="*{homeTeamPlayerStats[__${index.index}__].player.surname}"
-                                       th:value="${playerGame.player.surname}"/>
-                            </td>
-                            <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.id}"
-                                   th:value="${playerGame.player.id}">
-                            <td>
-                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].shots}"
-                                       type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger"
-                                   th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].shots')}"
-                                   th:errors="*{homeTeamPlayerStats[__${index.index}__].shots}"></p>
-                            </td>
-                            <td>
-                                <input class="form-control" th:field="*{homeTeamPlayerStats[__${index.index}__].goals}"
-                                       type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger"
-                                   th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].goals')}"
-                                   th:errors="*{homeTeamPlayerStats[__${index.index}__].goals}"></p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats')}"
-                       th:errors="*{homeTeamPlayerStats}"></p>
+            <form role="form" th:action="@{'/protocolist/game/'+${game.id}+'/addProtocol'}" th:object="${protocol}"
+                  th:method="post">
+                <div class="row" style="overflow-x:auto">
+                    <div class="col-lg-6">
+                        <h4 th:text="${homeTeam.name}"></h4>
+                        <input type="hidden" th:field="*{id}"/>
+                        <input type="hidden" th:name="game" th:id="game" th:value="${game.id}"/>
+                        <table id="homeTeamPlayers" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Piedalās</th>
+                                <th>Vārds</th>
+                                <th>Uzvārds</th>
+                                <th>Metieni</th>
+                                <th>Iemestie vārti</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="playerGame,index : *{homeTeamPlayerStats}">
+                                <td>
+                                    <input class="form-check-input isPlayingGame" type="checkbox"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].playingGame}">
+                                    <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].id}"/>
+                                    <input type="hidden"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].protocol}"/>
+                                </td>
+                                <td>
+                                    <p th:text="${playerGame.player.name}"></p>
+                                    <input type="hidden"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].player.name}"
+                                           th:value="${playerGame.player.name}"/>
+                                </td>
+                                <td>
+                                    <p th:text="${playerGame.player.surname}"></p>
+                                    <input type="hidden"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].player.surname}"
+                                           th:value="${playerGame.player.surname}"/>
+                                </td>
+                                <input type="hidden" th:field="*{homeTeamPlayerStats[__${index.index}__].player.id}"
+                                       th:value="${playerGame.player.id}">
+                                <td>
+                                    <input class="form-control"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].shots}"
+                                           type="number" th:readonly="${!playerGame.playingGame}">
+                                    <p class="pError bg-danger"
+                                       th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].shots')}"
+                                       th:errors="*{homeTeamPlayerStats[__${index.index}__].shots}"></p>
+                                </td>
+                                <td>
+                                    <input class="form-control"
+                                           th:field="*{homeTeamPlayerStats[__${index.index}__].goals}"
+                                           type="number" th:readonly="${!playerGame.playingGame}">
+                                    <p class="pError bg-danger"
+                                       th:if="${#fields.hasErrors('homeTeamPlayerStats['+index.index+'].goals')}"
+                                       th:errors="*{homeTeamPlayerStats[__${index.index}__].goals}"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p class="pError bg-danger" th:if="${#fields.hasErrors('homeTeamPlayerStats')}"
+                           th:errors="*{homeTeamPlayerStats}"></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4 th:text="${awayTeam.name}"></h4>
+                        <table id="awayTeamPlayers" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Piedalās</th>
+                                <th>Vārds</th>
+                                <th>Uzvārds</th>
+                                <th>Metieni</th>
+                                <th>Iemestie vārti</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="playerGame,index : *{awayTeamPlayerStats}">
+                                <td>
+                                    <input class="form-check-input isPlayingGame" type="checkbox"
+                                           th:field="*{awayTeamPlayerStats[__${index.index}__].playingGame}">
+                                    <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].id}"/>
+                                </td>
+                                <td>
+                                    <p th:text="${playerGame.player.name}"></p>
+                                    <input type="hidden"
+                                           th:field="*{awayTeamPlayerStats[__${index.index}__].player.name}"
+                                           th:value="${playerGame.player.name}"/>
+                                </td>
+                                <td>
+                                    <p th:text="${playerGame.player.surname}"></p>
+                                    <input type="hidden"
+                                           th:field="*{awayTeamPlayerStats[__${index.index}__].player.surname}"
+                                           th:value="${playerGame.player.surname}"/>
+                                </td>
+                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.id}"
+                                       th:value="${playerGame.player.id}"/>
+                                <td>
+                                    <input class="form-control"
+                                           th:field="*{awayTeamPlayerStats[__${index.index}__].shots}"
+                                           type="number" th:readonly="${!playerGame.playingGame}">
+                                    <p class="pError bg-danger"
+                                       th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].shots')}"
+                                       th:errors="*{awayTeamPlayerStats[__${index.index}__].shots}"></p>
+                                </td>
+                                <td>
+                                    <input class="form-control"
+                                           th:field="*{awayTeamPlayerStats[__${index.index}__].goals}"
+                                           type="number" th:readonly="${!playerGame.playingGame}">
+                                    <p class="pError bg-danger"
+                                       th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].goals')}"
+                                       th:errors="*{awayTeamPlayerStats[__${index.index}__].goals}"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats')}"
+                           th:errors="*{awayTeamPlayerStats}"></p>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <h4 th:text="${awayTeam.name}"></h4>
-                    <table id="awayTeamPlayers" class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Piedalās</th>
-                            <th>Vārds</th>
-                            <th>Uzvārds</th>
-                            <th>Metieni</th>
-                            <th>Iemestie vārti</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="playerGame,index : *{awayTeamPlayerStats}">
-                            <td>
-                                <input class="form-check-input isPlayingGame" type="checkbox"
-                                       th:field="*{awayTeamPlayerStats[__${index.index}__].playingGame}">
-                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].id}"/>
-                            </td>
-                            <td>
-                                <p th:text="${playerGame.player.name}"></p>
-                                <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.name}"
-                                       th:value="${playerGame.player.name}"/>
-                            </td>
-                            <td>
-                                <p th:text="${playerGame.player.surname}"></p>
-                                <input type="hidden"
-                                       th:field="*{awayTeamPlayerStats[__${index.index}__].player.surname}"
-                                       th:value="${playerGame.player.surname}"/>
-                            </td>
-                            <input type="hidden" th:field="*{awayTeamPlayerStats[__${index.index}__].player.id}"
-                                   th:value="${playerGame.player.id}"/>
-                            <td>
-                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].shots}"
-                                       type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger"
-                                   th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].shots')}"
-                                   th:errors="*{awayTeamPlayerStats[__${index.index}__].shots}"></p>
-                            </td>
-                            <td>
-                                <input class="form-control" th:field="*{awayTeamPlayerStats[__${index.index}__].goals}"
-                                       type="number" th:readonly="${!playerGame.playingGame}">
-                                <p class="pError bg-danger"
-                                   th:if="${#fields.hasErrors('awayTeamPlayerStats['+index.index+'].goals')}"
-                                   th:errors="*{awayTeamPlayerStats[__${index.index}__].goals}"></p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p class="pError bg-danger" th:if="${#fields.hasErrors('awayTeamPlayerStats')}"
-                       th:errors="*{awayTeamPlayerStats}"></p>
+                <div class="form-group">
+                    <button class="btn btn-success btn-block" type="submit">Saglabāt protokolu</button>
                 </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-success btn-block" type="submit">Saglabāt protokolu</button>
-            </div>
-        </form>
+            </form>
     </div>
 </div>
 <th:block th:insert="fragments/script :: scripts"></th:block>

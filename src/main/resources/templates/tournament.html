@@ -19,7 +19,7 @@
             <tr th:each="team:${tournament.teams}">
                 <td th:text="${team.name}"></td>
                 <td>
-                    <a class="btn btn-info" th:href="@{'/teams/'+${team.id}}">Komandas informācija</a>
+                    <a class="btn btn-secondary" th:href="@{'/teams/'+${team.id}}">Komandas informācija</a>
                 </td>
             </tr>
             </tbody>
@@ -29,29 +29,31 @@
 
         <h6>Spēļu kalendārs</h6>
         <h3 th:if="${#sets.isEmpty(tournament.games)}">Pašlaik nav nevienu spēļu!</h3>
-        <table class="table table-striped table-bordered" th:unless="${#sets.isEmpty(tournament.games)}">
-            <thead>
-            <tr>
-                <th>Mājas komanda</th>
-                <th>Viesu komanda</th>
-                <th>Datums</th>
-                <th>Rezultāts</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="game:${tournament.games}">
-                <td th:text="${game.homeTeam.name}"></td>
-                <td th:text="${game.awayTeam.name}"></td>
-                <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
-                <td th:text="${game.getHomeTeamGoals()}+' : '+${game.getAwayTeamGoals()}"></td>
-                <td>
-                    <a class="btn btn-info" th:if="${game.ended}"
-                       th:href="@{'/tournaments/'+${tournament.id}+'/game/'+${game.id}}">Spēles protokols</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="tableScroll">
+            <table class="table table-striped table-bordered" th:unless="${#sets.isEmpty(tournament.games)}">
+                <thead>
+                <tr>
+                    <th>Mājas komanda</th>
+                    <th>Viesu komanda</th>
+                    <th>Datums</th>
+                    <th>Rezultāts</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game:${tournament.games}">
+                    <td th:text="${game.homeTeam.name}"></td>
+                    <td th:text="${game.awayTeam.name}"></td>
+                    <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
+                    <td th:text="${game.getHomeTeamGoals()}+' : '+${game.getAwayTeamGoals()}"></td>
+                    <td>
+                        <a class="btn btn-secondary" th:if="${game.ended}"
+                           th:href="@{'/tournaments/'+${tournament.id}+'/game/'+${game.id}}">Spēles protokols</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <th:block th:insert="fragments/script :: scripts"></th:block>

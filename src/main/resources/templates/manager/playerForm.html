@@ -4,27 +4,29 @@
 <th:block th:insert="fragments/navbar :: header"></th:block>
 <body>
 <div class="container main">
-    <form role="form" th:action="@{'/manager/team/player'}" th:object="${player}" th:method="post">
-        <input type="hidden" th:field="*{id}"/>
-        <div class="form-group">
-            <h6>Vārds</h6>
-            <input class="form-control" th:field="*{name}" name="name" type="text">
-            <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-        </div>
-        <div class="form-group">
-            <h6>Uzvārds</h6>
-            <input class="form-control" th:field="*{surname}" name="name" type="text">
-            <p class="pError bg-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></p>
-        </div>
-        <div class="form-group">
-            <h6>Pozīcija</h6>
-            <input class="form-control" th:field="*{position}" name="name" type="text">
-            <p class="pError bg-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></p>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-success btn-block" type="submit">Saglabāt spēlētāju</button>
-        </div>
-    </form>
+    <div class="container info">
+        <form role="form" th:action="@{'/manager/team/player'}" th:object="${player}" th:method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <h6>Vārds</h6>
+                <input class="form-control" th:field="*{name}" name="name" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Uzvārds</h6>
+                <input class="form-control" th:field="*{surname}" name="name" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></p>
+            </div>
+            <div class="form-group">
+                <h6>Pozīcija</h6>
+                <input class="form-control" th:field="*{position}" name="name" type="text">
+                <p class="pError bg-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></p>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" type="submit">Saglabāt spēlētāju</button>
+            </div>
+        </form>
+    </div>
 </div>
 <th:block th:insert="fragments/script :: scripts"></th:block>
 </body>
