@@ -29,21 +29,21 @@
                     </ul>
                 </td>
                 <td>
-                    <a class="btn btn-success" th:unless="${user.hasRole('MANAGER')}"
+                    <a class="btn btn-primary" th:unless="${user.hasRole('MANAGER')}"
                        th:href="@{'/admin/editRoles/addManager/'+${user.id}}">Pievienot menedžera lomu</a>
-                    <a class="btn btn-danger" th:if="${user.hasRole('MANAGER')}"
+                    <a class="btn btn-dark" th:if="${user.hasRole('MANAGER')}"
                        th:href="@{'/admin/editRoles/removeManager/'+${user.id}}">Noņemt menedžera lomu</a>
                 </td>
                 <td>
-                    <a class="btn btn-success" th:unless="${user.hasRole('ORGANIZER')}"
+                    <a class="btn btn-primary" th:unless="${user.hasRole('ORGANIZER')}"
                        th:href="@{'/admin/editRoles/addOrganizer/'+${user.id}}">Pievienot organizatora lomu</a>
-                    <a class="btn btn-danger" th:if="${user.hasRole('ORGANIZER')}"
+                    <a class="btn btn-dark" th:if="${user.hasRole('ORGANIZER')}"
                        th:href="@{'/admin/editRoles/removeOrganizer/'+${user.id}}">Noņemt organizatora lomu</a>
                 </td>
                 <td>
-                    <a class="btn btn-success" th:unless="${user.hasRole('PROTOCOLIST')}"
+                    <a class="btn btn-primary" th:unless="${user.hasRole('PROTOCOLIST')}"
                        th:href="@{'/admin/editRoles/addProtocolist/'+${user.id}}">Pievienot protokolista lomu</a>
-                    <a class="btn btn-danger" th:if="${user.hasRole('PROTOCOLIST')}"
+                    <a class="btn btn-dark" th:if="${user.hasRole('PROTOCOLIST')}"
                        th:href="@{'/admin/editRoles/removeProtocolist/'+${user.id}}">Noņemt protokolista lomu</a>
                 </td>
             </tr>

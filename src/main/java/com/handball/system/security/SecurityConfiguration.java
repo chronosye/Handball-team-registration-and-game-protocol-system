@@ -16,7 +16,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/login/**", "/login-error/**", "/register/**", "/img/**", "/css/**", "/js/**", "/resources/**", "/calendar/**", "/tournaments/**", "/teams/**").permitAll()
+                .antMatchers("/login/**", "/login-error/**", "/register/**", "/img/**", "/css/**", "/js/**", "/resources/**", "/calendar/**", "/tournaments/**", "/teams/**", "/favicon.ico").permitAll()
                 .antMatchers("/h2-console/**", "/admin/**").access("hasAuthority('ADMIN')")
                 .antMatchers("/organizer/**").access("hasAnyAuthority('ADMIN','ORGANIZER')")
                 .antMatchers("/manager/**").access("hasAnyAuthority('ADMIN','MANAGER')")
@@ -24,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").defaultSuccessUrl("/").failureUrl("/login-error")
+                .loginPage("/login").defaultSuccessUrl("/",true).failureUrl("/login-error")
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll()
                 .logoutUrl("/logout")

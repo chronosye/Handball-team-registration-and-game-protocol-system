@@ -5,6 +5,7 @@ import com.handball.system.entity.Team;
 import com.handball.system.entity.User;
 import com.handball.system.service.PlayerService;
 import com.handball.system.service.TeamService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -36,7 +38,10 @@ public class ManagerController {
 
     //CREATING TEAM FUNCTIONALITY STARS HERE
     @GetMapping("/createTeam")
-    public String createTeam(Team team, Model model) {
+    public String createTeam(Team team, Model model, @AuthenticationPrincipal User user) {
+        if (teamService.hasManagerTeam(user)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         model.addAttribute("team", team);
         model.addAttribute("size", 5);
         return "manager/createTeam";
@@ -52,6 +57,9 @@ public class ManagerController {
             }
             return "manager/createTeam";
         }
+        if (teamService.hasManagerTeam(user)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         teamService.saveTeam(team, user);
         return "redirect:/manager/team";
     }
@@ -60,7 +68,11 @@ public class ManagerController {
     //Reading created team
     @GetMapping("/team")
     public String showTeam(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("team", teamService.findTeamByManager(user));
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("team", team);
         return "manager/team";
     }
 
@@ -74,7 +86,12 @@ public class ManagerController {
     //Editing team player
     @GetMapping("/team/editPlayer/{playerId}")
     public String updatePlayer(@AuthenticationPrincipal User user, @PathVariable String playerId, Model model) {
-        model.addAttribute("player", playerService.findPlayerByIdAndTeam(Long.valueOf(playerId), teamService.findTeamByManager(user)));
+        Team team = teamService.findTeamByManager(user);
+        Player player = playerService.findPlayerByIdAndTeam(Long.valueOf(playerId), team);
+        if (team == null || player == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("player", player);
         return "manager/playerForm";
     }
 
@@ -84,15 +101,23 @@ public class ManagerController {
         if (result.hasErrors()) {
             return "manager/playerForm";
         }
-        player.setTeam(teamService.findTeamByManager(user));
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        player.setTeam(team);
         playerService.savePlayer(player);
         return "redirect:/manager/team";
     }
 
     //deleting team player
     @GetMapping("/team/deletePlayer/{playerId}")
-    public String deletePlayer(@AuthenticationPrincipal User user, @PathVariable String playerId) {
-        playerService.deletePlayerByIdAndTeam(Long.valueOf(playerId), teamService.findTeamByManager(user));
+    public String deletePlayer(@PathVariable String playerId, @AuthenticationPrincipal User user) {
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        playerService.deletePlayerByIdAndTeam(Long.valueOf(playerId), team);
         return "redirect:/manager/team";
     }
 }

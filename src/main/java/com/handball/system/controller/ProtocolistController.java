@@ -8,11 +8,13 @@ import com.handball.system.service.GameService;
 import com.handball.system.service.PlayerService;
 import com.handball.system.service.PlayerStatsService;
 import com.handball.system.service.ProtocolService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -43,6 +45,9 @@ public class ProtocolistController {
     @GetMapping("/game/{gameId}/addProtocol")
     public String addProtocol(@PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
         Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
         Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
@@ -56,6 +61,9 @@ public class ProtocolistController {
     @GetMapping("/game/{gameId}/editProtocol")
     public String editProtocol(@PathVariable String gameId, Model model, @AuthenticationPrincipal User user) {
         Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
         Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
@@ -71,6 +79,9 @@ public class ProtocolistController {
         playerStatsService.validatePlayerStats(protocol.getHomeTeamPlayerStats(), bindingResult, true);
         playerStatsService.validatePlayerStats(protocol.getAwayTeamPlayerStats(), bindingResult, false);
         Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         if (bindingResult.hasErrors()) {
             Team homeTeam = game.getHomeTeam();
             Team awayTeam = game.getAwayTeam();

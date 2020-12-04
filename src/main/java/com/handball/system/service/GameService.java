@@ -1,10 +1,11 @@
 package com.handball.system.service;
 
-import com.handball.system.entity.*;
+import com.handball.system.entity.Game;
+import com.handball.system.entity.Team;
+import com.handball.system.entity.Tournament;
+import com.handball.system.entity.User;
 import com.handball.system.repository.GameRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,15 +28,15 @@ public class GameService {
     }
 
     public Game findGameById(Long id) {
-        return gameRepository.findById(id).get();
+        return gameRepository.findById(id).orElse(null);
     }
 
     public Game findGameByIdAndTournament(Long id, Tournament tournament) {
-        return gameRepository.findByIdAndTournament(id, tournament).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return gameRepository.findByIdAndTournament(id, tournament);
     }
 
     public Game findGameByIdAndProtocolist(Long id, User user) {
-        return gameRepository.findByIdAndProtocolist(id, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return gameRepository.findByIdAndProtocolist(id, user);
     }
 
     public Set<Team> findTeamsInGames(Tournament tournament) {
@@ -53,7 +54,6 @@ public class GameService {
     }
 
     public void deleteGameByIdAndTournament(Long id, Tournament tournament) {
-        Game game = gameRepository.findByIdAndTournament(id, tournament).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        gameRepository.delete(game);
+        gameRepository.deleteGameByIdAndTournament(id, tournament);
     }
 }

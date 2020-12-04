@@ -1,8 +1,8 @@
 package com.handball.system.service;
 
+import com.handball.system.entity.Player;
 import com.handball.system.entity.Team;
 import com.handball.system.entity.User;
-import com.handball.system.repository.PlayerRepository;
 import com.handball.system.repository.TeamRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,13 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final PlayerRepository playerRepository;
 
-    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository) {
+    public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
-        this.playerRepository = playerRepository;
     }
 
     public boolean hasManagerTeam(User user) {
-        if (teamRepository.findByManager(user) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return teamRepository.findByManager(user) != null;
     }
 
     public List<Team> findAllTeams() {
@@ -43,10 +37,9 @@ public class TeamService {
 
     public void saveTeam(Team team, User manager) {
         team.setManager(manager);
-        teamRepository.save(team);
-    }
-
-    public void deleteTeamByManager(User user) {
-        teamRepository.deleteAllByManager(user);
+        for (Player player : team.getPlayers()) {
+            player.setTeam(team);
+        }
+        if (teamRepository.findByManager(manager) == null) teamRepository.save(team);
     }
 }

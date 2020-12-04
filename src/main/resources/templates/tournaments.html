@@ -17,7 +17,7 @@
             <tr th:each="tournament : ${tournaments}">
                 <td th:text="${tournament.name}"></td>
                 <td>
-                    <a class="btn btn-info" th:href="@{'/tournaments/'+${tournament.id}}">Turnīra informācija</a>
+                    <a class="btn btn-secondary" th:href="@{'/tournaments/'+${tournament.id}}">Turnīra informācija</a>
                 </td>
             </tr>
             </tbody>

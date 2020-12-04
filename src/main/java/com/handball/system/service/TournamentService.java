@@ -49,6 +49,10 @@ public class TournamentService {
     }
 
     public Tournament findTournamentByIdAndOrganizer(Long id, User user) {
-        return tournamentRepository.findByIdAndOrganizer(id, user).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return tournamentRepository.findByIdAndOrganizer(id, user);
+    }
+
+    public void deleteTournament(Tournament tournament){
+        tournamentRepository.delete(tournament);
     }
 }

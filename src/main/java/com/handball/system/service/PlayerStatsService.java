@@ -39,7 +39,7 @@ public class PlayerStatsService {
         return goals;
     }
 
-    public Set<PlayerStats> validatePlayerStats(List<PlayerStats> playerStatsList, BindingResult bindingResult, boolean isHomeTeam) {
+    public void validatePlayerStats(List<PlayerStats> playerStatsList, BindingResult bindingResult, boolean isHomeTeam) {
         int counter = 0;
         Set<PlayerStats> validPlayers = new HashSet<>();
         for (PlayerStats gamePlayer : playerStatsList) {
@@ -63,6 +63,5 @@ public class PlayerStatsService {
                 bindingResult.rejectValue("awayTeamPlayerStats", "error.awayTeamPlayerStats", "Viesu spēlētāju skaits nevar būt mazāks par 6!");
             }
         }
-        return validPlayers;
     }
 }

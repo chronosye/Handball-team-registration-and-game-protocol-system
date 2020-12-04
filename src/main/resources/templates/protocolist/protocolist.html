@@ -5,31 +5,34 @@
 <body>
 <div class="container main">
     <div class="container info">
-        <table id="tournaments" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>Mājas komanda</th>
-                <th>Viesu komanda</th>
-                <th>Rezultāts</th>
-                <th>Datums</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="game : ${games}">
-                <td th:text="${game.homeTeam.name}"></td>
-                <td th:text="${game.awayTeam.name}"></td>
-                <td th:text="${game.homeTeamGoals}+' : '+${game.awayTeamGoals}"></td>
-                <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
-                <td>
-                    <a class="btn btn-success" th:unless="${game.ended}"
-                       th:href="@{'/protocolist/game/'+${game.id}+'/addProtocol'}">Ievadīt spēles protokolu</a>
-                    <a class="btn btn-warning" th:if="${game.ended}"
-                       th:href="@{'/protocolist/game/'+${game.id}+'/editProtocol'}">Labot spēles protokolu</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <h3 th:if="${#sets.isEmpty(games)}">Pašlaik nav nevienu Jums piešķirtu protokolējamu spēļu</h3>
+        <div class="tableScroll">
+            <table id="tournaments" class="table table-striped table-bordered" th:unless="${#sets.isEmpty(games)}">
+                <thead>
+                <tr>
+                    <th>Mājas komanda</th>
+                    <th>Viesu komanda</th>
+                    <th>Rezultāts</th>
+                    <th>Datums</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game : ${games}">
+                    <td th:text="${game.homeTeam.name}"></td>
+                    <td th:text="${game.awayTeam.name}"></td>
+                    <td th:text="${game.homeTeamGoals}+' : '+${game.awayTeamGoals}"></td>
+                    <td th:text="${#dates.format(game.date, 'dd-MM-yyyy HH:mm')}"></td>
+                    <td>
+                        <a class="btn btn-success" th:unless="${game.ended}"
+                           th:href="@{'/protocolist/game/'+${game.id}+'/addProtocol'}">Ievadīt spēles protokolu</a>
+                        <a class="btn btn-secondary" th:if="${game.ended}"
+                           th:href="@{'/protocolist/game/'+${game.id}+'/editProtocol'}">Labot spēles protokolu</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <th:block th:insert="fragments/script :: scripts"></th:block>

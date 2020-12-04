@@ -19,15 +19,15 @@ public class PlayerService {
     }
 
     public Player findPlayerByIdAndTeam(Long id, Team team) {
-        return playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return playerRepository.findByIdAndTeam(id, team);
     }
 
     public Player findPlayerById(Long id) {
-        return playerRepository.findById(id).get();
+        return playerRepository.findById(id).orElse(null);
     }
 
-    public Player savePlayer(Player player) {
-        return playerRepository.save(player);
+    public void savePlayer(Player player) {
+        playerRepository.save(player);
     }
 
     public List<Player> findPlayersByTeam(Team team) {
@@ -35,7 +35,12 @@ public class PlayerService {
     }
 
     public void deletePlayerByIdAndTeam(Long id, Team team) {
-        Player player = playerRepository.findByIdAndTeam(id, team).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        playerRepository.delete(player);
+        List<Player> players = playerRepository.findPlayersByTeam(team);
+        if (players.size() > 6) {
+            Player player = playerRepository.findByIdAndTeam(id, team);
+            playerRepository.delete(player);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

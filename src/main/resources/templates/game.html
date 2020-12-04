@@ -5,7 +5,6 @@
 <body>
 <div class="container main">
     <div class="container info">
-        <a class="btn btn-success" th:href="@{'/tournaments/'+${game.getTournament().id}}">Atpakaļ</a>
         <div class="row">
             <div class="col-md-6">
                 <h4 th:text="${game.getHomeTeam().name}"></h4>
@@ -19,7 +18,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="player:${protocol.getHomeTeamPlayerStats()}">
-                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().name}"></td>
+                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().surname}"></td>
                         <td th:text="${player.getShots()}"></td>
                         <td th:text="${player.getGoals()}"></td>
                     </tr>
@@ -38,7 +37,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="player:${protocol.getAwayTeamPlayerStats()}">
-                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().name}"></td>
+                        <td th:text="${player.getPlayer().name}+' '+${player.getPlayer().surname}"></td>
                         <td th:text="${player.getShots()}"></td>
                         <td th:text="${player.getGoals()}"></td>
                     </tr>
@@ -47,6 +46,7 @@
             </div>
         </div>
         <h2 class="text-center" th:text="${game.getHomeTeamGoals()}+' : '+${game.getAwayTeamGoals()}"></h2>
+        <a class="btn btn-secondary" th:href="@{'/tournaments/'+${game.getTournament().id}}">Atpakaļ</a>
     </div>
 </div>
 <th:block th:insert="fragments/script :: scripts"></th:block>

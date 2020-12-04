@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<div class="container main">
+    <div class="container info">
+        <h5>Vārds</h5>
+        <p th:text="${user.name}"></p>
+        <h5>Uzvārds</h5>
+        <p th:text="${user.surname}"></p>
+        <h5>E-pasts</h5>
+        <p th:text="${user.email}"></p>
+        <h5>Lomas</h5>
+        <ul class="roles">
+            <li th:each="role : ${user.roles}" th:text="${role.name()}"></li>
+        </ul>
+        <a class="btn btn-success" th:href="@{'/profile/editData'}">Mainīt datus par sevi</a>
+        <a class="btn btn-success" th:href="@{'/profile/editPassword'}">Mainīt paroli</a>
+    </div>
+</div>
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>
