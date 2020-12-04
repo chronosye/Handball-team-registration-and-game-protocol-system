@@ -36,26 +36,26 @@ public class UserService implements UserDetailsService {
         this.gameRepository = gameRepository;
     }
 
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public List<User> findAllUsers() {
         return userRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public Set<User> findAllUsersByRole(Role role) {
-        Set<User> users = new HashSet<>();
-        userRepository.findUsersByRolesContaining(role).forEach(users::add);
-        return users;
+        return new HashSet<>(userRepository.findUsersByRolesContaining(role));
     }
 
-    public void addRole(Long id, Role role) {
-        User user = userRepository.findById(id).get();
+    public void addRole(User user, Role role) {
         Set<Role> roles = user.getRoles();
         roles.add(role);
         user.setRoles(roles);
         userRepository.save(user);
     }
 
-    public void removeRole(Long id, Role role) {
-        User user = userRepository.findById(id).get();
+    public void removeRole(User user, Role role) {
         if (role == Role.ORGANIZER) {
             tournamentRepository.deleteAllByOrganizer(user);
         } else if (role == Role.MANAGER) {
@@ -85,12 +85,11 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User updateUserData(User formUser, User user) {
+    public void updateUserData(User formUser, User user) {
         user.setName(formUser.getName());
         user.setSurname(formUser.getSurname());
         user.setEmail(formUser.getEmail());
         userRepository.save(user);
-        return user;
     }
 
     public boolean validatePasswordChange(User user, String oldPassword, String newPassword, String newPasswordRepeat, Model model) {
@@ -108,11 +107,10 @@ public class UserService implements UserDetailsService {
         return flag;
     }
 
-    public User updateUserPassword(User user, String password) {
+    public void updateUserPassword(User user, String password) {
         final String encryptedPassword = passwordEncoder.encode(password);
         user.setPassword(encryptedPassword);
         userRepository.save(user);
-        return user;
     }
 
     public boolean userExists(String email) {
@@ -127,7 +125,7 @@ public class UserService implements UserDetailsService {
         roles.add(Role.USER);
         user.setRoles(roles);
 
-        final User createdUser = userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override

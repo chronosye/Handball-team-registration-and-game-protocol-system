@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface PlayerStatsRepository extends JpaRepository<PlayerStats, Long> {
-    void deleteGamePlayersByProtocol(Protocol protocol);
 
     List<PlayerStats> findAllByPlayer(Player player);
+
+    void deleteGamePlayersByProtocol(Protocol protocol);
 }

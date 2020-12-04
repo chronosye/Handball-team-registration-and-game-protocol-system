@@ -20,11 +20,7 @@ public class TeamService {
     }
 
     public boolean hasManagerTeam(User user) {
-        if (teamRepository.findByManager(user) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return teamRepository.findByManager(user) != null;
     }
 
     public List<Team> findAllTeams() {
@@ -44,6 +40,6 @@ public class TeamService {
         for (Player player : team.getPlayers()) {
             player.setTeam(team);
         }
-        teamRepository.save(team);
+        if (teamRepository.findByManager(manager) == null) teamRepository.save(team);
     }
 }

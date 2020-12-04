@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="fragments/head ::head"></th:block>
+<th:block th:insert="fragments/navbar :: header"></th:block>
+<body>
+<img th:if="${errorType}==404" class="errorImage img-fluid" src="/img/404.png" alt="">
+<img th:if="${errorType}==403" class="errorImage img-fluid" src="/img/403.png" alt="">
+<img th:if="${errorType}==500" class="errorImage img-fluid" src="/img/500.png" alt="">
+<th:block th:insert="fragments/script :: scripts"></th:block>
+</body>
+</html>
