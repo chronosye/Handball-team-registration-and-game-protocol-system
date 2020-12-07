@@ -76,6 +76,17 @@ public class ManagerController {
         return "manager/team";
     }
 
+    //deleting team
+    @GetMapping("team/delete")
+    public String deleteTeam(@AuthenticationPrincipal User user) {
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        teamService.deleteTeam(team);
+        return "redirect:/manager";
+    }
+
     //Creating new team player
     @GetMapping("/team/addPlayer")
     public String addPlayer(Model model, Player player) {
