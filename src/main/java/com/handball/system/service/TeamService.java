@@ -40,6 +40,12 @@ public class TeamService {
         return teamRepository.findByManager(user);
     }
 
+    public void updateTeam(Team team) {
+        Team teamToEdit = teamRepository.findById(team.getId()).get();
+        teamToEdit.setName(team.getName());
+        teamRepository.save(teamToEdit);
+    }
+
     public void saveTeam(Team team, User manager) {
         team.setManager(manager);
         for (Player player : team.getPlayers()) {

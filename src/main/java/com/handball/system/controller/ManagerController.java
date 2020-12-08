@@ -76,6 +76,27 @@ public class ManagerController {
         return "manager/team";
     }
 
+    //Editing team
+    @GetMapping("/team/edit")
+    public String editTeam(@AuthenticationPrincipal User user, Model model) {
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("team", team);
+        return "manager/editTeam";
+    }
+
+    @PostMapping("/team/edit")
+    public String editTeam(Team team, BindingResult errors) {
+        if (team.getName().isEmpty()) {
+            errors.rejectValue("name", "errors.name", "Komandas nosaukums nevar būt tukšs");
+            return "manager/editTeam";
+        }
+        teamService.updateTeam(team);
+        return "redirect:/manager/team";
+    }
+
     //deleting team
     @GetMapping("team/delete")
     public String deleteTeam(@AuthenticationPrincipal User user) {
