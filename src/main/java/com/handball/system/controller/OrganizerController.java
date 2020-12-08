@@ -94,20 +94,30 @@ public class OrganizerController {
         return "redirect:/organizer/tournaments/" + tournamentId + "/editTeams";
     }
 
-    //creating new tournament
+    //creating or editing tournament
     @GetMapping("/createTournament")
     public String createTournament(Tournament tournament, Model model) {
         model.addAttribute("tournament", tournament);
-        return "organizer/createTournament";
+        return "organizer/tournamentForm";
+    }
+
+    @GetMapping("/tournaments/{tournamentId}/edit")
+    public String editTournament(Model model, @PathVariable String tournamentId, @AuthenticationPrincipal User user) {
+        Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
+        if (tournament == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("tournament", tournament);
+        return "organizer/tournamentForm";
     }
 
     //saving new tournament to database
-    @PostMapping("/createTournament")
+    @PostMapping("/createOrUpdateTournament")
     public String createTournament(@Valid Tournament tournament, BindingResult errors, @AuthenticationPrincipal User user) {
         if (errors.hasErrors()) {
-            return "organizer/createTournament";
+            return "organizer/tournamentForm";
         }
-        Tournament savedTournament = tournamentService.saveNewTournament(tournament, user);
+        Tournament savedTournament = tournamentService.saveOrUpdateTournament(tournament, user);
         return "redirect:/organizer/tournaments/" + savedTournament.getId();
     }
 

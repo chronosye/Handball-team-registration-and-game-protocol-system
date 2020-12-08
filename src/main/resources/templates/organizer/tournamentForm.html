@@ -5,14 +5,15 @@
 <body>
 <div class="container main">
     <div class="container info">
-        <form role="form" th:action="@{/organizer/createTournament}" th:object="${tournament}" th:method="post">
+        <form role="form" th:action="@{/organizer/createOrUpdateTournament}" th:object="${tournament}" th:method="post">
             <h2>Izveidot turnīru</h2>
             <div class="form-group">
+                <input type="hidden" th:field="*{id}"/>
                 <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="Turnīra nosaukums">
                 <p class="pError bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
             </div>
             <div class="form-group">
-                <button class="btn btn-success btn-block" type="submit">Izveidot turnīru</button>
+                <button class="btn btn-success btn-block" type="submit">Saglabāt turnīru</button>
             </div>
         </form>
     </div>
