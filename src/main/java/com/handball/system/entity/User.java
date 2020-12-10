@@ -4,10 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,16 +17,20 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Vārds nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
     private String name;
     @NotBlank(message = "Uzvārds nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
     private String surname;
 
     @Column(unique = true)
     @NotBlank(message = "E-pasts nevar būt tukšs!")
     @Email(message = "Ievadiet pareizu e-pastu!")
+    @Size(max = 100, message = "Maksimālais simbolu skaits ir 100!")
     private String email;
     @NotNull(message = "Parole nevar būt tukša!")
     @Size(min = 8, message = "Minimālais paroles garums ir 8 simboli!")
+    @Size(max = 80, message = "Maksimālais paroles garums ir 80 simboli!")
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -142,10 +143,6 @@ public class User implements UserDetails {
             default:
                 selectedRole = null;
         }
-        if (this.roles.contains(selectedRole)) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.roles.contains(selectedRole);
     }
 }

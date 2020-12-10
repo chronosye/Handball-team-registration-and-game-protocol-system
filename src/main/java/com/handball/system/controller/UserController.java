@@ -35,6 +35,9 @@ public class UserController {
 
     @PostMapping("/profile/editData")
     public String editProfileData(@Valid User formUser, BindingResult bindingResult, @AuthenticationPrincipal User user) {
+        if (userService.userExists(formUser.getEmail()) && !formUser.getEmail().equals(user.getEmail())) {
+            bindingResult.rejectValue("email", "error.user", "Lietotājs ar šādu e-pastu jau pastāv!");
+        }
         if (bindingResult.hasFieldErrors("name") || bindingResult.hasFieldErrors("surname") || bindingResult.hasFieldErrors("email")) {
             return "user/dataForm";
         }
