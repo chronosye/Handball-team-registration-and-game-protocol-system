@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class Tournament {
     private Long id;
 
     @NotBlank(message = "Nosaukums nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
