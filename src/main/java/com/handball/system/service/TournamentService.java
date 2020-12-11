@@ -41,9 +41,11 @@ public class TournamentService {
         tournamentRepository.save(tournament);
     }
 
-    public void removeTeamFromTournament(Tournament tournament, Team team) {
-        tournament.getTeams().remove(team);
-        tournamentRepository.save(tournament);
+    public void removeTeamFromTournament(Tournament tournament, Team team, Set<Team> teamsInGames) {
+        if (!teamsInGames.contains(team)) {
+            tournament.getTeams().remove(team);
+            tournamentRepository.save(tournament);
+        }
     }
 
     public Set<Tournament> findTournamentsByOrganizer(User user) {

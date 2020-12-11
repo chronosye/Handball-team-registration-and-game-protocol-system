@@ -90,7 +90,7 @@ public class OrganizerController {
         if (tournament == null || team == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        tournamentService.removeTeamFromTournament(tournament, team);
+        tournamentService.removeTeamFromTournament(tournament, team, gameService.findTeamsInGames(tournament));
         return "redirect:/organizer/tournaments/" + tournamentId + "/editTeams";
     }
 
