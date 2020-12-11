@@ -77,7 +77,11 @@ public class UserService implements UserDetailsService {
                 teamRepository.deleteAllByManager(user);
             }
         } else if (role == Role.PROTOCOLIST) {
-            gameRepository.deleteAllByProtocolist(user);
+            Set<Game> games = gameRepository.findAllByProtocolist(user);
+            for (Game game : games) {
+                game.setProtocolist(userRepository.findById(1L).get());
+                gameRepository.save(game);
+            }
         }
         Set<Role> roles = user.getRoles();
         roles.remove(role);

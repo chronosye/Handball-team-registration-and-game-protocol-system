@@ -23,6 +23,4 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     Game findByIdAndProtocolist(Long id, User user);
 
     void deleteGameByIdAndTournament(Long id, Tournament tournament);
-
-    void deleteAllByProtocolist(User user);
 }
