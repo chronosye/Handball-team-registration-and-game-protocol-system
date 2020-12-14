@@ -46,7 +46,7 @@ public class TournamentController {
 
     @GetMapping("/{tournamentId}/game/{gameId}")
     public String tournamentGameInfo(Model model, @PathVariable String tournamentId, @PathVariable String gameId) {
-        Game game = gameService.findGameById(Long.valueOf(gameId));
+        Game game = gameService.findGameByIdAndTournament(Long.valueOf(gameId), tournamentService.findTournamentById(Long.valueOf(tournamentId)));
         Protocol protocol = protocolService.getProtocolByGame(game);
         if (game == null || protocol == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

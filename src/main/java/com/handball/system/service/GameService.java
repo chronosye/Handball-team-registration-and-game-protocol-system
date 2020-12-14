@@ -33,10 +33,6 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public Game findGameById(Long id) {
-        return gameRepository.findById(id).orElse(null);
-    }
-
     public Game findGameByIdAndTournament(Long id, Tournament tournament) {
         return gameRepository.findByIdAndTournament(id, tournament);
     }

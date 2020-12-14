@@ -18,6 +18,7 @@ public class Team {
     private Long id;
 
     @NotBlank(message = "Komandas nosaukums nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
     private String name;
 
     @OneToOne
