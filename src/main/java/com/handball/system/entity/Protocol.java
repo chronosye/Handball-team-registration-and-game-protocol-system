@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Protocol {
     private List<PlayerStats> awayTeamPlayerStats = new ArrayList<>();
 
     @OneToOne
+    @NotNull
     private Game game;
 
     public Protocol() {

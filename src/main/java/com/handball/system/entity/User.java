@@ -18,15 +18,18 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Vārds nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String name;
     @NotBlank(message = "Uzvārds nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String surname;
 
     @Column(unique = true)
     @NotBlank(message = "E-pasts nevar būt tukšs!")
     @Email(message = "Ievadiet pareizu e-pastu!")
     @Size(max = 100, message = "Maksimālais simbolu skaits ir 100!")
+    @NotNull
     private String email;
     @NotNull(message = "Parole nevar būt tukša!")
     @Size(min = 8, message = "Minimālais paroles garums ir 8 simboli!")
@@ -120,29 +123,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public boolean hasRole(String role) {
-        Role selectedRole;
-        switch (role) {
-            case "ADMIN":
-                selectedRole = Role.ADMIN;
-                break;
-            case "MANAGER":
-                selectedRole = Role.MANAGER;
-                break;
-            case "PROTOCOLIST":
-                selectedRole = Role.PROTOCOLIST;
-                break;
-            case "USER":
-                selectedRole = Role.USER;
-                break;
-            case "ORGANIZER":
-                selectedRole = Role.ORGANIZER;
-                break;
-            default:
-                selectedRole = null;
-        }
-        return this.roles.contains(selectedRole);
     }
 }

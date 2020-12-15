@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class Tournament {
 
     @NotBlank(message = "Nosaukums nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -26,8 +28,9 @@ public class Tournament {
             inverseJoinColumns = @JoinColumn(name = "team_id"))
     private Set<Team> teams = new HashSet<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "organizer_id")
+    @NotNull
     private User organizer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament")

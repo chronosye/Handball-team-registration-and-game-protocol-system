@@ -3,6 +3,7 @@ package com.handball.system.entity;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,10 +20,12 @@ public class Team {
 
     @NotBlank(message = "Komandas nosaukums nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String name;
 
     @OneToOne
     @JoinColumn(name = "manager_id")
+    @NotNull
     private User manager;
 
     @ManyToMany(mappedBy = "teams")

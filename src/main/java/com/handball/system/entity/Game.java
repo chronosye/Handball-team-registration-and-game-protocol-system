@@ -17,6 +17,7 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "tournament_id")
+    @NotNull
     private Tournament tournament;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,7 +36,9 @@ public class Game {
     @NotNull(message = "Nav izvēlēta viesu komanda!")
     private Team awayTeam;
 
+    @NotNull
     private Integer homeTeamGoals;
+    @NotNull
     private Integer awayTeamGoals;
 
     @OneToOne

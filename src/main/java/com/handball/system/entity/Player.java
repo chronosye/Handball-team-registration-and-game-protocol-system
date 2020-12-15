@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -14,16 +15,20 @@ public class Player {
 
     @NotBlank(message = "Vārds nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String name;
     @NotBlank(message = "Uzvārds nevar būt tukšs!")
     @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String surname;
     @NotBlank(message = "Pozīcija nevar būt tukša!")
     @Size(max = 80, message = "Maksimālais simbolu skaits ir 80!")
+    @NotNull
     private String position;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @NotNull
     private Team team;
 
     public Player() {
