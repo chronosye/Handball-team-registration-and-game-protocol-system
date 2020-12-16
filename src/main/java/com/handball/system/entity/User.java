@@ -95,6 +95,30 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean hasRole(String role) {
+        Role selectedRole;
+        switch (role) {
+            case "ADMIN":
+                selectedRole = Role.ADMIN;
+                break;
+            case "MANAGER":
+                selectedRole = Role.MANAGER;
+                break;
+            case "PROTOCOLIST":
+                selectedRole = Role.PROTOCOLIST;
+                break;
+            case "USER":
+                selectedRole = Role.USER;
+                break;
+            case "ORGANIZER":
+                selectedRole = Role.ORGANIZER;
+                break;
+            default:
+                selectedRole = null;
+        }
+        return this.roles.contains(selectedRole);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

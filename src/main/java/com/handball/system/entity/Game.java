@@ -1,11 +1,17 @@
 package com.handball.system.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "games")
@@ -38,6 +44,7 @@ public class Game {
 
     @NotNull
     private Integer homeTeamGoals;
+
     @NotNull
     private Integer awayTeamGoals;
 
@@ -129,5 +136,23 @@ public class Game {
 
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
+    }
+
+    public void validateGameForm(BindingResult bindingResult) {
+        Game game = this;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Game>> violations = validator.validate(game);
+        if (game.getAwayTeam() == game.getHomeTeam() && game.getAwayTeam() != null) {
+            bindingResult.rejectValue("homeTeam", "errors.homeTeam", "Mājas un viesu komandas nevar būt vienādas");
+            bindingResult.rejectValue("awayTeam", "errors.awayTeam", "Mājas un viesu komandas nevar būt vienādas");
+        }
+        for (ConstraintViolation<Game> violation : violations) {
+            if ((!violation.getPropertyPath().toString().equals("homeTeamGoals")) &&
+                    (!violation.getPropertyPath().toString().equals("awayTeamGoals")) &&
+                    (!violation.getPropertyPath().toString().equals("tournament"))) {
+                bindingResult.rejectValue(violation.getPropertyPath().toString(), "errors." + violation.getPropertyPath().toString(), violation.getMessage());
+            }
+        }
     }
 }

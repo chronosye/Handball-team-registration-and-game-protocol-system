@@ -75,7 +75,8 @@ public class ProtocolistController {
     }
 
     @PostMapping("/game/{gameId}/addProtocol")
-    public String Protocol(@PathVariable String gameId, @Valid @ModelAttribute Protocol protocol, BindingResult bindingResult, Model model, @AuthenticationPrincipal User user) {
+    public String Protocol(@PathVariable String gameId, @ModelAttribute Protocol protocol, BindingResult bindingResult, Model model, @AuthenticationPrincipal User user) {
+        protocol.validateProtocolForm(bindingResult);
         playerStatsService.validatePlayerStats(protocol.getHomeTeamPlayerStats(), bindingResult, true);
         playerStatsService.validatePlayerStats(protocol.getAwayTeamPlayerStats(), bindingResult, false);
         Game game = gameService.findGameByIdAndProtocolist(Long.valueOf(gameId), user);

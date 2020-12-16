@@ -1,9 +1,16 @@
 package com.handball.system.entity;
 
+import org.springframework.validation.BindingResult;
+
 import javax.persistence.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Table(name = "players")
@@ -72,5 +79,17 @@ public class Player {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public void validatePlayerForm(BindingResult bindingResult) {
+        Player player = this;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Player>> violations = validator.validate(player);
+        for (ConstraintViolation<Player> violation : violations) {
+            if ((!violation.getPropertyPath().toString().equals("team"))) {
+                bindingResult.rejectValue(violation.getPropertyPath().toString(), "errors." + violation.getPropertyPath().toString(), violation.getMessage());
+            }
+        }
     }
 }

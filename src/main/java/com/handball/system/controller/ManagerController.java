@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
@@ -48,7 +46,8 @@ public class ManagerController {
     }
 
     @PostMapping("/createTeam")
-    public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user, Model model) {
+    public String createTeam(Team team, BindingResult errors, @AuthenticationPrincipal User user, Model model) {
+        team.validateTeamForm(errors);
         if (errors.hasErrors()) {
             if (team.getPlayers().size() <= 6) {
                 model.addAttribute("size", 5);
@@ -129,7 +128,8 @@ public class ManagerController {
 
     //saving team player to database
     @PostMapping("/team/player")
-    public String saveOrUpdatePlayer(@Valid Player player, BindingResult result, @AuthenticationPrincipal User user) {
+    public String saveOrUpdatePlayer(Player player, BindingResult result, @AuthenticationPrincipal User user) {
+        player.validatePlayerForm(result);
         if (result.hasErrors()) {
             return "manager/playerForm";
         }
