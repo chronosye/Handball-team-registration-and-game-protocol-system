@@ -23,7 +23,6 @@ public class Protocol {
     private List<PlayerStats> awayTeamPlayerStats = new ArrayList<>();
 
     @OneToOne
-    @NotNull
     private Game game;
 
     public Protocol() {

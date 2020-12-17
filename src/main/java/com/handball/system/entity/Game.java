@@ -52,7 +52,7 @@ public class Game {
     @NotNull(message = "Nav izvēlēts protokolists!")
     private User protocolist;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Protocol protocol;
 
     public Game() {
