@@ -58,9 +58,9 @@ public class PlayerStatsService {
         }
         if (validPlayers.size() < 6) {
             if (isHomeTeam) {
-                bindingResult.rejectValue("homeTeamPlayerStats", "error.homeTeamPlayerStats", "Mājas spēlētāju skaits nevar būt mazāks par 6!");
+                bindingResult.rejectValue("homeTeamPlayerStats", "error.homeTeamPlayerStats", "Mājas spēlējošo spēlētāju skaits nevar būt mazāks par 6!");
             } else {
-                bindingResult.rejectValue("awayTeamPlayerStats", "error.awayTeamPlayerStats", "Viesu spēlētāju skaits nevar būt mazāks par 6!");
+                bindingResult.rejectValue("awayTeamPlayerStats", "error.awayTeamPlayerStats", "Viesu spēlējošo spēlētāju skaits nevar būt mazāks par 6!");
             }
         }
     }

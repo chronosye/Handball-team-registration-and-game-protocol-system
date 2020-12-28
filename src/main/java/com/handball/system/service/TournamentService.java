@@ -21,7 +21,13 @@ public class TournamentService {
         this.tournamentRepository = tournamentRepository;
     }
 
-    public Tournament saveNewTournament(Tournament tournament, User organizer) {
+    public Tournament saveOrUpdateTournament(Tournament tournament, User organizer) {
+        if (tournament.getId() != null) {
+            Tournament tournamentToEdit = tournamentRepository.findById(tournament.getId()).get();
+            tournamentToEdit.setName(tournament.getName());
+            tournamentToEdit.setOrganizer(organizer);
+            return tournamentRepository.save(tournamentToEdit);
+        }
         tournament.setOrganizer(organizer);
         return tournamentRepository.save(tournament);
     }
@@ -35,9 +41,11 @@ public class TournamentService {
         tournamentRepository.save(tournament);
     }
 
-    public void removeTeamFromTournament(Tournament tournament, Team team) {
-        tournament.getTeams().remove(team);
-        tournamentRepository.save(tournament);
+    public void removeTeamFromTournament(Tournament tournament, Team team, Set<Team> teamsInGames) {
+        if (!teamsInGames.contains(team)) {
+            tournament.getTeams().remove(team);
+            tournamentRepository.save(tournament);
+        }
     }
 
     public Set<Tournament> findTournamentsByOrganizer(User user) {
@@ -52,7 +60,7 @@ public class TournamentService {
         return tournamentRepository.findByIdAndOrganizer(id, user);
     }
 
-    public void deleteTournament(Tournament tournament){
+    public void deleteTournament(Tournament tournament) {
         tournamentRepository.delete(tournament);
     }
 }

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-
 @Controller
 public class UserController {
 
@@ -34,8 +32,12 @@ public class UserController {
     }
 
     @PostMapping("/profile/editData")
-    public String editProfileData(@Valid User formUser, BindingResult bindingResult, @AuthenticationPrincipal User user) {
-        if (bindingResult.hasFieldErrors("name") || bindingResult.hasFieldErrors("surname") || bindingResult.hasFieldErrors("email")) {
+    public String editProfileData(User formUser, BindingResult bindingResult, @AuthenticationPrincipal User user) {
+        if (userService.userExists(formUser.getEmail()) && !formUser.getEmail().equals(user.getEmail())) {
+            bindingResult.rejectValue("email", "error.user", "Lietotājs ar šādu e-pastu jau pastāv!");
+        }
+        formUser.validateDataEditForm(bindingResult);
+        if (bindingResult.hasErrors()) {
             return "user/dataForm";
         }
         userService.updateUserData(formUser, user);

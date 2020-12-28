@@ -2,6 +2,7 @@ package com.handball.system.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class PlayerStats {
@@ -14,14 +15,18 @@ public class PlayerStats {
     private boolean playingGame;
 
     @ManyToOne
+    @NotNull
     private Player player;
 
     @ManyToOne
+    @NotNull
     private Protocol protocol;
 
     @Min(value = 0, message = "Metienu skaits nevar būt negatīvs!")
+    @NotNull
     private Integer shots;
     @Min(value = 0, message = "Vārtu skaits nevar būt negatīvs!")
+    @NotNull
     private Integer goals;
 
     public PlayerStats() {

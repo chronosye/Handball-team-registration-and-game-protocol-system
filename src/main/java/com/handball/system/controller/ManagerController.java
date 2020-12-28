@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
@@ -48,7 +46,8 @@ public class ManagerController {
     }
 
     @PostMapping("/createTeam")
-    public String createTeam(@Valid Team team, BindingResult errors, @AuthenticationPrincipal User user, Model model) {
+    public String createTeam(Team team, BindingResult errors, @AuthenticationPrincipal User user, Model model) {
+        team.validateTeamForm(errors);
         if (errors.hasErrors()) {
             if (team.getPlayers().size() <= 6) {
                 model.addAttribute("size", 5);
@@ -76,6 +75,38 @@ public class ManagerController {
         return "manager/team";
     }
 
+    //Editing team
+    @GetMapping("/team/edit")
+    public String editTeam(@AuthenticationPrincipal User user, Model model) {
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("team", team);
+        return "manager/editTeam";
+    }
+
+    @PostMapping("/team/edit")
+    public String editTeam(Team team, BindingResult errors) {
+        if (team.getName().isEmpty()) {
+            errors.rejectValue("name", "errors.name", "Komandas nosaukums nevar būt tukšs");
+            return "manager/editTeam";
+        }
+        teamService.updateTeam(team);
+        return "redirect:/manager/team";
+    }
+
+    //deleting team
+    @GetMapping("team/delete")
+    public String deleteTeam(@AuthenticationPrincipal User user) {
+        Team team = teamService.findTeamByManager(user);
+        if (team == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        teamService.deleteTeam(team);
+        return "redirect:/manager";
+    }
+
     //Creating new team player
     @GetMapping("/team/addPlayer")
     public String addPlayer(Model model, Player player) {
@@ -97,7 +128,8 @@ public class ManagerController {
 
     //saving team player to database
     @PostMapping("/team/player")
-    public String saveOrUpdatePlayer(@Valid Player player, BindingResult result, @AuthenticationPrincipal User user) {
+    public String saveOrUpdatePlayer(Player player, BindingResult result, @AuthenticationPrincipal User user) {
+        player.validatePlayerForm(result);
         if (result.hasErrors()) {
             return "manager/playerForm";
         }

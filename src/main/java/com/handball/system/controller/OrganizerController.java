@@ -2,6 +2,7 @@ package com.handball.system.controller;
 
 import com.handball.system.entity.*;
 import com.handball.system.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validator;
+import java.util.Set;
 
 
 @Transactional
@@ -90,24 +94,35 @@ public class OrganizerController {
         if (tournament == null || team == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        tournamentService.removeTeamFromTournament(tournament, team);
+        tournamentService.removeTeamFromTournament(tournament, team, gameService.findTeamsInGames(tournament));
         return "redirect:/organizer/tournaments/" + tournamentId + "/editTeams";
     }
 
-    //creating new tournament
+    //creating or editing tournament
     @GetMapping("/createTournament")
     public String createTournament(Tournament tournament, Model model) {
         model.addAttribute("tournament", tournament);
-        return "organizer/createTournament";
+        return "organizer/tournamentForm";
+    }
+
+    @GetMapping("/tournaments/{tournamentId}/edit")
+    public String editTournament(Model model, @PathVariable String tournamentId, @AuthenticationPrincipal User user) {
+        Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
+        if (tournament == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("tournament", tournament);
+        return "organizer/tournamentForm";
     }
 
     //saving new tournament to database
-    @PostMapping("/createTournament")
-    public String createTournament(@Valid Tournament tournament, BindingResult errors, @AuthenticationPrincipal User user) {
+    @PostMapping("/createOrUpdateTournament")
+    public String createOrUpdateTournament(Tournament tournament, BindingResult errors, @AuthenticationPrincipal User user) {
+        tournament.validateTournamentForm(errors);
         if (errors.hasErrors()) {
-            return "organizer/createTournament";
+            return "organizer/tournamentForm";
         }
-        Tournament savedTournament = tournamentService.saveNewTournament(tournament, user);
+        Tournament savedTournament = tournamentService.saveOrUpdateTournament(tournament, user);
         return "redirect:/organizer/tournaments/" + savedTournament.getId();
     }
 
@@ -126,12 +141,9 @@ public class OrganizerController {
 
     //saving new game into database
     @PostMapping("/tournaments/{tournamentId}/game")
-    public String saveOrUpdateTournamentGame(@Valid Game game, BindingResult bindingResult, @PathVariable String tournamentId, Model model, @AuthenticationPrincipal User user) {
+    public String saveOrUpdateTournamentGame(Game game, BindingResult bindingResult, @PathVariable String tournamentId, Model model, @AuthenticationPrincipal User user) {
         Tournament tournament = tournamentService.findTournamentByIdAndOrganizer(Long.valueOf(tournamentId), user);
-        if (game.getAwayTeam() == game.getHomeTeam() && game.getAwayTeam() != null) {
-            bindingResult.rejectValue("homeTeam", "errors.homeTeam", "Mājas un viesu komandas nevar būt vienādas");
-            bindingResult.rejectValue("awayTeam", "errors.awayTeam", "Mājas un viesu komandas nevar būt vienādas");
-        }
+        game.validateGameForm(bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("game", game);
             model.addAttribute("teams", tournament.getTeams());

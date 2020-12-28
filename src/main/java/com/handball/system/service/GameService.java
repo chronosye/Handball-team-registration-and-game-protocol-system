@@ -5,6 +5,7 @@ import com.handball.system.entity.Team;
 import com.handball.system.entity.Tournament;
 import com.handball.system.entity.User;
 import com.handball.system.repository.GameRepository;
+import com.handball.system.repository.ProtocolRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -14,9 +15,11 @@ import java.util.Set;
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final ProtocolRepository protocolRepository;
 
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, ProtocolRepository protocolRepository) {
         this.gameRepository = gameRepository;
+        this.protocolRepository = protocolRepository;
     }
 
     public void saveGame(Game game, Tournament tournament) {
@@ -24,11 +27,10 @@ public class GameService {
         game.setHomeTeamGoals(0);
         game.setAwayTeamGoals(0);
         game.setEnded(false);
+        if (game.getId() != null) {
+            protocolRepository.deleteByGame(game);
+        }
         gameRepository.save(game);
-    }
-
-    public Game findGameById(Long id) {
-        return gameRepository.findById(id).orElse(null);
     }
 
     public Game findGameByIdAndTournament(Long id, Tournament tournament) {

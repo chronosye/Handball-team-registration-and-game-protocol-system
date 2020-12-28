@@ -2,12 +2,14 @@ package com.handball.system.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,16 +22,23 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Vārds nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String name;
     @NotBlank(message = "Uzvārds nevar būt tukšs!")
+    @Size(max = 250, message = "Maksimālais simbolu skaits ir 250!")
+    @NotNull
     private String surname;
 
     @Column(unique = true)
     @NotBlank(message = "E-pasts nevar būt tukšs!")
     @Email(message = "Ievadiet pareizu e-pastu!")
+    @Size(max = 100, message = "Maksimālais simbolu skaits ir 100!")
+    @NotNull
     private String email;
     @NotNull(message = "Parole nevar būt tukša!")
     @Size(min = 8, message = "Minimālais paroles garums ir 8 simboli!")
+    @Size(max = 80, message = "Maksimālais paroles garums ir 80 simboli!")
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -91,6 +100,30 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean hasRole(String role) {
+        Role selectedRole;
+        switch (role) {
+            case "ADMIN":
+                selectedRole = Role.ADMIN;
+                break;
+            case "MANAGER":
+                selectedRole = Role.MANAGER;
+                break;
+            case "PROTOCOLIST":
+                selectedRole = Role.PROTOCOLIST;
+                break;
+            case "USER":
+                selectedRole = Role.USER;
+                break;
+            case "ORGANIZER":
+                selectedRole = Role.ORGANIZER;
+                break;
+            default:
+                selectedRole = null;
+        }
+        return this.roles.contains(selectedRole);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -121,31 +154,15 @@ public class User implements UserDetails {
         return true;
     }
 
-    public boolean hasRole(String role) {
-        Role selectedRole;
-        switch (role) {
-            case "ADMIN":
-                selectedRole = Role.ADMIN;
-                break;
-            case "MANAGER":
-                selectedRole = Role.MANAGER;
-                break;
-            case "PROTOCOLIST":
-                selectedRole = Role.PROTOCOLIST;
-                break;
-            case "USER":
-                selectedRole = Role.USER;
-                break;
-            case "ORGANIZER":
-                selectedRole = Role.ORGANIZER;
-                break;
-            default:
-                selectedRole = null;
-        }
-        if (this.roles.contains(selectedRole)) {
-            return true;
-        } else {
-            return false;
+    public void validateDataEditForm(BindingResult bindingResult) {
+        User user = this;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        for (ConstraintViolation<User> violation : violations) {
+            if ((!violation.getPropertyPath().toString().equals("password"))) {
+                bindingResult.rejectValue(violation.getPropertyPath().toString(), "errors." + violation.getPropertyPath().toString(), violation.getMessage());
+            }
         }
     }
 }

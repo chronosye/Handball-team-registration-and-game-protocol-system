@@ -42,7 +42,8 @@ public class TeamController {
 
     @GetMapping("/{teamId}/player/{playerId}")
     public String getTeamPlayerInfo(@PathVariable String teamId, @PathVariable String playerId, Model model) {
-        Player player = playerService.findPlayerById(Long.valueOf(playerId));
+        Team team = teamService.findTeamById(Long.valueOf(teamId));
+        Player player = playerService.findPlayerByIdAndTeam(Long.valueOf(playerId), team);
         if (player == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

@@ -77,7 +77,11 @@ public class UserService implements UserDetailsService {
                 teamRepository.deleteAllByManager(user);
             }
         } else if (role == Role.PROTOCOLIST) {
-            gameRepository.deleteAllByProtocolist(user);
+            Set<Game> games = gameRepository.findAllByProtocolist(user);
+            for (Game game : games) {
+                game.setProtocolist(userRepository.findById(1L).get());
+                gameRepository.save(game);
+            }
         }
         Set<Role> roles = user.getRoles();
         roles.remove(role);
@@ -98,7 +102,10 @@ public class UserService implements UserDetailsService {
             model.addAttribute("oldPasswordError", "Ievadītā vecā parole nav pareiza!");
             flag = true;
         } else if (newPassword.length() < 8) {
-            model.addAttribute("newPasswordError", "Jaunā parole nevar būt īsāka par 8 simboliem");
+            model.addAttribute("newPasswordError", "Minimālais paroles garums ir 8 simboli!");
+            flag = true;
+        } else if (newPassword.length() > 80) {
+            model.addAttribute("newPasswordError", "Maksimālais paroles garums ir 80 simboli!");
             flag = true;
         } else if (!newPassword.equals(newPasswordRepeat)) {
             model.addAttribute("newPasswordRepeatError", "Atkārtotā parole nav vienāda!");
