@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 @Controller
 @Transactional
@@ -37,7 +36,7 @@ public class ProtocolistController {
     }
 
     @GetMapping("")
-    public String managerHome(@AuthenticationPrincipal User user, Model model) {
+    public String protocolistHome(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("games", gameService.findGamesByProtocolist(user));
         return "protocolist/protocolist";
     }
@@ -50,7 +49,7 @@ public class ProtocolistController {
         }
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
-        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
+        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam));
         model.addAttribute("game", game);
         model.addAttribute("homeTeam", homeTeam);
         model.addAttribute("awayTeam", awayTeam);
@@ -66,7 +65,7 @@ public class ProtocolistController {
         }
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
-        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam), game);
+        Protocol protocol = new Protocol(playerService.findPlayersByTeam(homeTeam), playerService.findPlayersByTeam(awayTeam));
         model.addAttribute("game", game);
         model.addAttribute("homeTeam", homeTeam);
         model.addAttribute("awayTeam", awayTeam);

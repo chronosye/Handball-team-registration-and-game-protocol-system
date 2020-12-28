@@ -21,7 +21,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/organizer/**").access("hasAnyAuthority('ADMIN','ORGANIZER')")
                 .antMatchers("/manager/**").access("hasAnyAuthority('ADMIN','MANAGER')")
                 .antMatchers("/protocolist/**").access("hasAnyAuthority('ADMIN','PROTOCOLIST')")
-                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login").defaultSuccessUrl("/",true).failureUrl("/login-error")

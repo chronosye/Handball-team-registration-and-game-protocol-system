@@ -33,7 +33,7 @@ public class TeamService {
     }
 
     public Team findTeamById(Long id) {
-        return teamRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        return teamRepository.findById(id).orElse(null);
     }
 
     public Team findTeamByManager(User user) {

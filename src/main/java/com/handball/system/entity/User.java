@@ -2,8 +2,13 @@ package com.handball.system.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -147,5 +152,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void validateDataEditForm(BindingResult bindingResult) {
+        User user = this;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        for (ConstraintViolation<User> violation : violations) {
+            if ((!violation.getPropertyPath().toString().equals("password"))) {
+                bindingResult.rejectValue(violation.getPropertyPath().toString(), "errors." + violation.getPropertyPath().toString(), violation.getMessage());
+            }
+        }
     }
 }

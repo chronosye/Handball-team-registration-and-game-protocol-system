@@ -22,10 +22,6 @@ public class PlayerService {
         return playerRepository.findByIdAndTeam(id, team);
     }
 
-    public Player findPlayerById(Long id) {
-        return playerRepository.findById(id).orElse(null);
-    }
-
     public void savePlayer(Player player) {
         playerRepository.save(player);
     }
