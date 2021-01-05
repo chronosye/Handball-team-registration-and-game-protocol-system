@@ -1,8 +1,10 @@
 package com.handball.system.controller;
 
 import com.handball.system.entity.*;
-import com.handball.system.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.handball.system.service.GameService;
+import com.handball.system.service.TeamService;
+import com.handball.system.service.TournamentService;
+import com.handball.system.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
-import javax.validation.Validator;
-import java.util.Set;
 
 
 @Transactional

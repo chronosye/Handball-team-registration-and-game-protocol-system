@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
-import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.*;

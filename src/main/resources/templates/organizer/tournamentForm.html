@@ -6,7 +6,7 @@
 <div class="container main">
     <div class="container info">
         <form role="form" th:action="@{/organizer/createOrUpdateTournament}" th:object="${tournament}" th:method="post">
-            <h2>Izveidot turnīru</h2>
+            <h2>Izveidot/Labot turnīru</h2>
             <div class="form-group">
                 <input type="hidden" th:field="*{id}"/>
                 <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="Turnīra nosaukums">
